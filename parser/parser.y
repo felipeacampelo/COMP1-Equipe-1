@@ -11,6 +11,7 @@ void yyerror(const char *s);
     char *id;
 }
 
+%token IF WHILE
 %token <intValue> NUM
 %token <id> ID
 %token PLUS MINUS TIMES DIV
@@ -30,6 +31,14 @@ program:
 ;
 
 stmt:
+    IF LPAREN expr RPAREN stmt { 
+        printf ("If reconhecido\n");
+    }
+    |
+    WHILE LPAREN expr RPAREN stmt {
+        printf ("while reconhecido\n");
+    }
+    |
     ID ASSIGN expr{
         printf("Atribuicao reconhecida\n");
     }

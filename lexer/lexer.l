@@ -5,8 +5,8 @@
 /* Definições de padrões de token e ações */
 %%
 
-if          { printf("KW_IF\n"); }
-while       { printf("KW_WHILE\n"); }
+if          { return IF }
+while       { return WHILE }
 
 "//".*     { /* Ignorar comentários de linha */ }
 
