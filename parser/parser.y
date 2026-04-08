@@ -79,7 +79,3 @@ factor:
 void yyerror(const char *s){
     printf("Erro sintatico\n");
 }
-
-int main(){
-    return yyparse();
-}
