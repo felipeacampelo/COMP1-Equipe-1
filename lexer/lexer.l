@@ -1,25 +1,43 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../parser/parser.tab.h" 
 %}
 
 %%
 
-if          { printf("KW_IF\n"); }
-while       { printf("KW_WHILE\n"); }
-
-"//".*     { /* Ignorar comentários de linha */ }
-
+"print"     { return PRINT; }
+"if"        { return IF; }
+"else"     { return ELSE; }
+"while"     { return WHILE; }
+"=="        { return EQ; }
+">"         { return MT; }
+"<"         { return LT; }
+"//".*      { /* Ignorar comentário de linha */ }
 "/*"([^*]|\*+[^*/])*\*+\/    { /* Ignorar comentários de bloco */ }
 
-[a-zA-Z_][a-zA-Z0-9_]*  { printf("IDENT(%s)\n", yytext); }
+[a-zA-Z_][a-zA-Z0-9_]* { 
+    yylval.id = strdup(yytext); 
+    return ID; 
+}
 
-[0-9]+(\.[0-9]+)?  { printf("NUMBER(%s)\n", yytext); }
+[0-9]+(\.[0-9]+)? { 
+    yylval.intValue = atoi(yytext); 
+    return NUM; 
+}
 
-[+\-*/=]   { printf("OPERATOR(%s)\n", yytext); }
+"="         { return ASSIGN; }
+"+"         { return PLUS; }
+"-"         { return MINUS; }
+"*"         { return TIMES; }
+"/"         { return DIV; }
+"("         { return LPAREN; }
+")"         { return RPAREN; }
 
-[ \t\n]+  { /* Não faz nada */ }
+[ \t\n]+    { /* Ignorar espaços e pulos de linha */ }
 
-.  { printf("UNKNOWN(%s)\n", yytext); }
+.           { printf("UNKNOWN(%s)\n", yytext); }
 
 %%
 
@@ -29,5 +47,6 @@ int yywrap(void) {
 
 int main(void) {
     yylex();
+    
     return 0;
 }

@@ -11,14 +11,18 @@ void yyerror(const char *s);
     char *id;
 }
 
-%token IF WHILE
 %token <intValue> NUM
 %token <id> ID
 %token PLUS MINUS TIMES DIV
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
+%token IF
+%token ELSE
+%token WHILE
+%token MT LT EQ
 
+%left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
 
@@ -27,36 +31,53 @@ void yyerror(const char *s);
 %%
 
 program:
-    stmt
+    program stmt
+    | stmt
 ;
 
 stmt:
-    IF LPAREN expr RPAREN stmt { 
-        printf ("If reconhecido\n");
-    }
-    |
-    WHILE LPAREN expr RPAREN stmt {
-        printf ("while reconhecido\n");
-    }
-    |
     ID ASSIGN expr{
         printf("Atribuicao reconhecida\n");
     }
-    | PRINT LPAREN NUM RPAREN{
-        printf("Print reconhecido\n");
+    | PRINT LPAREN expr RPAREN{
+        printf("Print reconhecido: %d\n", $3);
+    }
+    | IF LPAREN expr RPAREN stmt{
+        printf("Comando IF reconhecido:");
+    }
+    | IF LPAREN expr RPAREN stmt ELSE stmt{
+        printf("Comando IF-ELSE reconhecido:");
+    }
+    | WHILE LPAREN expr RPAREN stmt{
+        printf("Comando WHILE reconhecido:");
     }
 ;
 
 expr:
-    expr PLUS term{
+     expr PLUS term{
         $$ = $1 + $3;
     }
+
     | expr MINUS term{
         $$ = $1 - $3;
     }
+
     | term{
         $$ = $1;
     }
+
+    | expr MT expr {
+    $$ = $1 > $3;
+    }
+
+    | expr LT expr {
+     $$ = $1 < $3; 
+    } 
+
+    | expr EQ expr { 
+    $$ = $1 == $3; 
+    }
+
 ;
 
 term:
