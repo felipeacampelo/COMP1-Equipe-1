@@ -22,7 +22,6 @@ void yyerror(const char *s);
 %token WHILE
 %token MT LT EQ
 
-
 %left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
@@ -109,8 +108,4 @@ factor:
 
 void yyerror(const char *s){
     printf("Erro sintatico\n");
-}
-
-int main(){
-    return yyparse();
 }
