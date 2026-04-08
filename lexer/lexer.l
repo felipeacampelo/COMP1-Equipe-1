@@ -2,11 +2,10 @@
 #include <stdio.h>
 %}
 
-/* Definições de padrões de token e ações */
 %%
 
-if          { return IF }
-while       { return WHILE }
+if          { printf("KW_IF\n"); }
+while       { printf("KW_WHILE\n"); }
 
 "//".*     { /* Ignorar comentários de linha */ }
 
@@ -24,12 +23,10 @@ while       { return WHILE }
 
 %%
 
-/* Função auxiliar do Flex (quando termina o arquivo de entrada) */
 int yywrap(void) {
     return 1;
 }
 
-/* Função principal: executa o analisador léxico */
 int main(void) {
     yylex();
     return 0;
