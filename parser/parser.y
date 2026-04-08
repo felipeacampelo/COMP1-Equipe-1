@@ -44,7 +44,7 @@ stmt:
 ;
 
 expr:
-     expr PLUS term { $$ = $1 + $3; }
+    expr PLUS term { $$ = $1 + $3; }
     | expr MINUS term { $$ = $1 - $3; }
     | term { $$ = $1; }
     | expr MT expr { $$ = $1 > $3; }
