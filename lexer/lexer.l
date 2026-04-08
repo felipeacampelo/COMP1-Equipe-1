@@ -46,7 +46,5 @@ int yywrap(void) {
 }
 
 int main(void) {
-    yylex();
-    
-    return 0;
+    return yyparse();
 }
