@@ -21,6 +21,7 @@ void yyerror(const char *s);
 %token ELSE
 %token WHILE
 %token MT LT EQ
+%token COLON
 
 %left MT LT EQ
 %left PLUS MINUS
@@ -31,16 +32,21 @@ void yyerror(const char *s);
 %%
 
 program:
-    program stmt
-    | stmt
+    program stmt '\n'
+    | stmt '\n'
 ;
 
 stmt:
-    ID ASSIGN expr { printf("Atribuicao reconhecida\n"); }
-    | PRINT LPAREN expr RPAREN { printf("Print reconhecido: %d\n", $3); }
-    | IF LPAREN expr RPAREN stmt { printf("Comando IF reconhecido:"); }
-    | IF LPAREN expr RPAREN stmt ELSE stmt { printf("Comando IF-ELSE reconhecido:"); }
-    | WHILE LPAREN expr RPAREN stmt { printf("Comando WHILE reconhecido:"); }
+    ID ASSIGN term { }
+    | PRINT LPAREN expr RPAREN { }
+    | IF LPAREN expr RPAREN COLON stmt { }
+    | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
+    | WHILE LPAREN expr RPAREN COLON stmt { }
+    | expr { }
+    | WHILE LPAREN expr RPAREN COLON { }
+    | WHILE LPAREN term RPAREN COLON { }
+    | IF LPAREN expr RPAREN COLON { }
+    | IF LPAREN term RPAREN COLON { }
 ;
 
 expr:
@@ -50,6 +56,8 @@ expr:
     | expr MT expr { $$ = $1 > $3; }
     | expr LT expr { $$ = $1 < $3; } 
     | expr EQ expr { $$ = $1 == $3; }
+    | expr PLUS expr { $$ = $1 + $3; }
+    | expr MINUS expr { $$ = $1 - $3; }
 ;
 
 term:
@@ -59,9 +67,9 @@ term:
 ;
 
 factor:
-    NUM { $$ = $1; }
-    | ID { $$ = 0; }
-    | LPAREN expr RPAREN { $$ = $2; }
+    NUM { }
+    | ID { }
+    | LPAREN expr RPAREN { }
 ;
 
 %%
