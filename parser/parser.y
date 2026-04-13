@@ -36,11 +36,16 @@ program:
 ;
 
 stmt:
-    ID ASSIGN expr { }
+    ID ASSIGN term { }
     | PRINT LPAREN expr RPAREN { }
     | IF LPAREN expr RPAREN stmt { }
     | IF LPAREN expr RPAREN stmt ELSE stmt { }
     | WHILE LPAREN expr RPAREN stmt { }
+    | expr { }
+    | WHILE LPAREN expr RPAREN { }
+    | WHILE LPAREN term RPAREN { }
+    | IF LPAREN expr RPAREN { }
+    | IF LPAREN term RPAREN { }
 ;
 
 expr:
@@ -50,6 +55,8 @@ expr:
     | expr MT expr { $$ = $1 > $3; }
     | expr LT expr { $$ = $1 < $3; } 
     | expr EQ expr { $$ = $1 == $3; }
+    | expr PLUS expr { $$ = $1 + $3; }
+    | expr MINUS expr { $$ = $1 - $3; }
 ;
 
 term:
