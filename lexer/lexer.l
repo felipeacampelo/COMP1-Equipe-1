@@ -35,7 +35,8 @@
 "("         { return LPAREN; }
 ")"         { return RPAREN; }
 
-[ \t\n]+    { /* Ignorar espaços e pulos de linha */ }
+[ \t]+      { /* Ignorar espaços e pulos de linha */ }
+\n          { return '\n'; }
 
 .           { printf("UNKNOWN(%s)\n", yytext); }
 

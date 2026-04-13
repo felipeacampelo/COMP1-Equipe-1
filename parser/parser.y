@@ -31,8 +31,8 @@ void yyerror(const char *s);
 %%
 
 program:
-    program stmt
-    | stmt
+    program stmt '\n'
+    | stmt '\n'
 ;
 
 stmt:
