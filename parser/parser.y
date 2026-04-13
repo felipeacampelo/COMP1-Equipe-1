@@ -36,11 +36,11 @@ program:
 ;
 
 stmt:
-    ID ASSIGN expr { printf("Atribuicao reconhecida\n"); }
-    | PRINT LPAREN expr RPAREN { printf("Print reconhecido: %d\n", $3); }
-    | IF LPAREN expr RPAREN stmt { printf("Comando IF reconhecido:"); }
-    | IF LPAREN expr RPAREN stmt ELSE stmt { printf("Comando IF-ELSE reconhecido:"); }
-    | WHILE LPAREN expr RPAREN stmt { printf("Comando WHILE reconhecido:"); }
+    ID ASSIGN expr { }
+    | PRINT LPAREN expr RPAREN { }
+    | IF LPAREN expr RPAREN stmt { }
+    | IF LPAREN expr RPAREN stmt ELSE stmt { }
+    | WHILE LPAREN expr RPAREN stmt { }
 ;
 
 expr:
