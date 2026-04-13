@@ -41,6 +41,7 @@
     printf("LT(%s)\n", yytext);
     return LT; 
 }
+
 "//".*      { /* Ignorar comentário de linha */ }
 
 "/*"([^*]|\*+[^*/])*\*+\/    { /* Ignorar comentários de bloco */ }
@@ -90,6 +91,11 @@
 ")"         { 
     printf("RPAREN(%s)\n", yytext);
     return RPAREN; 
+}
+
+":"         {
+    printf("COLON(%s)\n", yytext);
+    return COLON;
 }
 
 [ \t]+      { /* Ignorar espaços e pulos de linha */ }

@@ -21,6 +21,7 @@ void yyerror(const char *s);
 %token ELSE
 %token WHILE
 %token MT LT EQ
+%token COLON
 
 %left MT LT EQ
 %left PLUS MINUS
@@ -38,14 +39,14 @@ program:
 stmt:
     ID ASSIGN term { }
     | PRINT LPAREN expr RPAREN { }
-    | IF LPAREN expr RPAREN stmt { }
-    | IF LPAREN expr RPAREN stmt ELSE stmt { }
-    | WHILE LPAREN expr RPAREN stmt { }
+    | IF LPAREN expr RPAREN COLON stmt { }
+    | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
+    | WHILE LPAREN expr RPAREN COLON stmt { }
     | expr { }
-    | WHILE LPAREN expr RPAREN { }
-    | WHILE LPAREN term RPAREN { }
-    | IF LPAREN expr RPAREN { }
-    | IF LPAREN term RPAREN { }
+    | WHILE LPAREN expr RPAREN COLON { }
+    | WHILE LPAREN term RPAREN COLON { }
+    | IF LPAREN expr RPAREN COLON { }
+    | IF LPAREN term RPAREN COLON { }
 ;
 
 expr:
