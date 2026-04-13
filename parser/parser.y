@@ -66,9 +66,9 @@ term:
 ;
 
 factor:
-    NUM { $$ = $1; }
-    | ID { $$ = 0; }
-    | LPAREN expr RPAREN { $$ = $2; }
+    NUM { }
+    | ID { }
+    | LPAREN expr RPAREN { }
 ;
 
 %%
