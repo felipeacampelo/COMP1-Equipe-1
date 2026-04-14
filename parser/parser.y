@@ -13,15 +13,15 @@ void yyerror(const char *s);
 
 %token <intValue> NUM
 %token <id> ID
-%token PLUS MINUS TIMES DIV
+%token PLUS MINUS TIMES DIV DIV_ATRIBUTION TIMES_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
-%token IF
-%token ELSE
-%token WHILE
-%token MT LT EQ
-%token COLON
+%token IF ELSE WHILE FOR COLON
+%token MT LT EQ DIFF NOT
+%token IMPORT FROM AS
+%token INPUT 
+%token INT DOUBLE FLOAT COMPLEX
 
 %left MT LT EQ
 %left PLUS MINUS
@@ -47,6 +47,10 @@ stmt:
     | WHILE LPAREN term RPAREN COLON { }
     | IF LPAREN expr RPAREN COLON { }
     | IF LPAREN term RPAREN COLON { }
+    | IMPORT ID { }
+    | FROM ID IMPORT ID { }
+    | FROM ID IMPORT ID AS ID { }
+    | IMPORT ID AS ID { }
 ;
 
 expr:

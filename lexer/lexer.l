@@ -27,9 +27,59 @@
     return WHILE; 
 }
 
+"for"       {
+    printf("FOR(%s)\n", yytext);
+    return FOR;
+}
+
+"import"    {
+    printf("IMPORT(%s)\n", yytext);
+    return IMPORT;
+}
+
+"as"        {
+    printf("AS(%s)\n", yytext);
+    return AS;
+}
+
+"from"      {
+    printf("FROM(%s)\n", yytext);
+    return FROM;
+}
+
+"input"     {
+    printf("INPUT(%s)\n", yytext);
+    return INPUT;
+}
+
+"int"       {
+    printf("INT(%s)\n", yytext);
+    return INT;
+}
+
+"double"    {
+    printf("DOUBLE(%s)\n", yytext);
+    return DOUBLE;
+}
+
+"float"     {
+    printf("FLOAT(%s)\n", yytext);
+    return FLOAT;
+}
+
+"complex"   {
+    printf("COMPLEX(%s)\n", yytext);
+    return COMPLEX;
+}
+
 "=="        { 
     printf("EQ(%s)\n", yytext);
     return EQ; 
+}
+
+"!="        {
+    printf("DIFF(%s)\n", yytext);
+    return DIFF;
 }
 
 ">"         { 
@@ -42,7 +92,12 @@
     return LT; 
 }
 
-"//".*      { /* Ignorar comentário de linha */ }
+"!"         {
+    printf("NOT(%s)\n", yytext);
+    return NOT;
+}
+
+"#".*      { /* Ignorar comentário de linha */ }
 
 "/*"([^*]|\*+[^*/])*\*+\/    { /* Ignorar comentários de bloco */ }
 
@@ -68,6 +123,11 @@
     return PLUS; 
 }
 
+"++"        {
+    printf("INCREMENT(%s)\n", yytext);
+    return INCREMENT;
+}
+
 "-"         { 
     printf("MINUS(%s)\n", yytext);
     return MINUS; 
@@ -78,9 +138,29 @@
     return TIMES; 
 }
 
+"*="        {
+    printf("TIMES_ATRIBUTION(%s)\n", yytext);
+    return TIMES_ATRIBUTION;
+}
+
 "/"         { 
     printf("DIV(%s)\n", yytext);
     return DIV; 
+}
+
+"/="        {
+    printf("DIV_ATRIBUTION(%s)\n", yytext);
+    return DIV_ATRIBUTION;
+}
+
+"//"        {
+    printf("INT_DIV(%s)\n", yytext);
+    return INT_DIV;
+}
+
+"//="       {
+    printf("INT_DIV_ATRIBUTION(%s)\n", yytext);
+    return INT_DIV_ATRIBUTION;
 }
 
 "("         { 
