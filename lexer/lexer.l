@@ -27,6 +27,21 @@
     return WHILE; 
 }
 
+"import"    {
+    printf("IMPORT(%s)\n", yytext);
+    return IMPORT;
+}
+
+"as"        {
+    printf("AS(%s)\n", yytext);
+    return AS;
+}
+
+"from"      {
+    printf("FROM(%s)\n", yytext);
+    return FROM;
+}
+
 "=="        { 
     printf("EQ(%s)\n", yytext);
     return EQ; 

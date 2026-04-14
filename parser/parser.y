@@ -22,6 +22,9 @@ void yyerror(const char *s);
 %token WHILE
 %token MT LT EQ
 %token COLON
+%token IMPORT
+%token FROM
+%token AS
 
 %left MT LT EQ
 %left PLUS MINUS
@@ -47,6 +50,10 @@ stmt:
     | WHILE LPAREN term RPAREN COLON { }
     | IF LPAREN expr RPAREN COLON { }
     | IF LPAREN term RPAREN COLON { }
+    | IMPORT ID { }
+    | FROM ID IMPORT ID { }
+    | FROM ID IMPORT ID AS ID { }
+    | IMPORT ID AS ID { }
 ;
 
 expr:
