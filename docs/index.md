@@ -2,24 +2,6 @@
 layout: default
 title: Início
 ---
-
-# Compilador Python -> Java
-
-Este repositório documenta o desenvolvimento de um compilador para um subconjunto de Python com saída planejada em Java. O projeto usa **Flex** para análise léxica e **Bison** para análise sintática, seguindo uma evolução incremental ao longo do semestre.
-
-## Início Rápido
-
-```bash
-# Compilar o compilador
-make all
-
-# Executar o compilador
-./compilador < input.py
-
-# Limpar arquivos gerados
-make clean
-```
-
 ## Visão Geral
 
 O objetivo do projeto é construir um compilador para um subconjunto de Python, começando pela leitura de tokens e validação sintática e evoluindo depois para análise semântica, representação intermediária e geração de código em Java.
@@ -137,13 +119,15 @@ Depois da base léxica e sintática, o projeto deve evoluir para:
 3. gcc parser/parser.tab.c lexer/lex.yy.c -o compilador -lfl
 ```
 
-## Contribuindo
+## Início Rápido
 
-1. Faça um fork do repositório
-2. Crie uma branch de feature
-3. Faça suas alterações
-4. Envie um pull request
+```bash
+# Compilar o compilador
+make all
 
-## Licença
+# Executar o compilador
+./compilador < input.py
 
-Este projeto é parte de um curso universitário de compiladores (COMP1).
+# Limpar arquivos gerados
+make clean
+```

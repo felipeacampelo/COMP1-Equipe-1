@@ -8,33 +8,33 @@
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title | default: site.github.repository_name }}</title>
   </head>
   <body>
-    <header class="page-header" role="banner">
-      <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
-      <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
-      {% if site.github.is_project_page %}
-        <a href="{{ site.github.repository_url }}" class="btn">Ver no GitHub</a>
-      {% endif %}
-    </header>
-
-    <nav class="main-nav">
-      <div class="nav-container">
-        <a href="{{ site.baseurl }}/" {% if page.url == "/" %}class="active"{% endif %}>Início</a>
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>{{ site.title }}</h2>
+        <p>{{ site.description }}</p>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="{{ site.baseurl }}/" {% if page.url == "/" or page.url == "/index.html" %}class="active"{% endif %}>Início</a>
         <a href="{{ site.baseurl }}/sprints.html" {% if page.url contains "sprints" %}class="active"{% endif %}>Sprints</a>
         <a href="{{ site.baseurl }}/grammar.html" {% if page.url contains "grammar" %}class="active"{% endif %}>Gramática</a>
         <a href="{{ site.baseurl }}/lexer.html" {% if page.url contains "lexer" %}class="active"{% endif %}>Lexer</a>
         <a href="{{ site.baseurl }}/parser.html" {% if page.url contains "parser" %}class="active"{% endif %}>Parser</a>
         <a href="{{ site.baseurl }}/examples.html" {% if page.url contains "examples" %}class="active"{% endif %}>Exemplos</a>
-      </div>
-    </nav>
-
-    <main id="content" class="main-content" role="main">
-      {{ content }}
-
-      <footer class="site-footer">
+      </nav>
+      
+      <div class="sidebar-footer">
         {% if site.github.is_project_page %}
-          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> mantido por <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+          <a href="{{ site.github.repository_url }}" target="_blank">Ver no GitHub</a>
         {% endif %}
-        <span class="site-footer-credits">Projeto COMP1 - Compiladores</span>
+      </div>
+    </div>
+
+    <main class="content">
+      {{ content }}
+      
+      <footer class="content-footer">
+        <p>Projeto COMP1 - Compiladores</p>
       </footer>
     </main>
   </body>

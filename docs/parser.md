@@ -5,7 +5,7 @@ title: Documentação do Parser
 
 # Analisador Sintático (Parser)
 
-O parser é implementado usando **Bison** (GNU Parser Generator). Ele valida a sintaxe dos fluxos de tokens de acordo com as regras gramaticais atuais.
+O parser é implementado usando **Bison** (GNU Parser Generator). Ele valida a sintaxe dos fluxos de tokens de acordo com as regras gramaticais.
 
 ## Localização do Arquivo
 
@@ -154,11 +154,3 @@ bison -d parser/parser.y -o parser/parser.tab.c
 Isso gera:
 - `parser.tab.c` - A implementação do parser
 - `parser.tab.h` - Definições de tokens para o lexer
-
-## Melhorias Futuras
-
-1. **Ações Semânticas** - Completar a propagação de valores em `factor` e nas regras de comando
-2. **Recuperação de Erros** - Melhor tratamento de erros e sincronização
-3. **Tabela de Símbolos** - Rastrear declarações e tipos de variáveis
-4. **Verificação de Tipos** - Validar tipos de operandos em expressões
-5. **Geração de Código** - Gerar código alvo (Java, no caso do projeto da equipe)
