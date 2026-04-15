@@ -72,14 +72,9 @@
     return COMPLEX;
 }
 
-"=="        { 
-    printf("EQ(%s)\n", yytext);
-    return EQ; 
-}
-
-"!="        {
-    printf("DIFF(%s)\n", yytext);
-    return DIFF;
+"!"         {
+    printf("NOT(%s)\n", yytext);
+    return NOT;
 }
 
 ">"         { 
@@ -90,11 +85,6 @@
 "<"         { 
     printf("LT(%s)\n", yytext);
     return LT; 
-}
-
-"!"         {
-    printf("NOT(%s)\n", yytext);
-    return NOT;
 }
 
 "#".*      { /* Ignorar comentário de linha */ }
@@ -113,9 +103,14 @@
     return NUM; 
 }
 
-"="         { 
-    printf("ASSING(%s)\n", yytext);
-    return ASSIGN; 
+"++"        {
+    printf("INCREMENT(%s)\n", yytext);
+    return INCREMENT;
+}
+
+"+="        {
+    printf("PLUS_ATRIBUTION(%s)\n", yytext);
+    return PLUS_ATRIBUTION;
 }
 
 "+"         { 
@@ -123,9 +118,9 @@
     return PLUS; 
 }
 
-"++"        {
-    printf("INCREMENT(%s)\n", yytext);
-    return INCREMENT;
+"-="        {
+    printf("MINUS_ATRIBUTION(%s)\n", yytext);
+    return MINUS_ATRIBUTION;
 }
 
 "-"         { 
@@ -133,19 +128,19 @@
     return MINUS; 
 }
 
-"*"         { 
-    printf("TIMES(%s)\n", yytext);
-    return TIMES; 
-}
-
 "*="        {
     printf("TIMES_ATRIBUTION(%s)\n", yytext);
     return TIMES_ATRIBUTION;
 }
 
-"/"         { 
-    printf("DIV(%s)\n", yytext);
-    return DIV; 
+"*"         { 
+    printf("TIMES(%s)\n", yytext);
+    return TIMES; 
+}
+
+"//="       {
+    printf("INT_DIV_ATRIBUTION(%s)\n", yytext);
+    return INT_DIV_ATRIBUTION;
 }
 
 "/="        {
@@ -158,9 +153,24 @@
     return INT_DIV;
 }
 
-"//="       {
-    printf("INT_DIV_ATRIBUTION(%s)\n", yytext);
-    return INT_DIV_ATRIBUTION;
+"/"         { 
+    printf("DIV(%s)\n", yytext);
+    return DIV; 
+}
+
+"=="        { 
+    printf("EQ(%s)\n", yytext);
+    return EQ; 
+}
+
+"!="        {
+    printf("DIFF(%s)\n", yytext);
+    return DIFF;
+}
+
+"="         { 
+    printf("ASSING(%s)\n", yytext);
+    return ASSIGN; 
 }
 
 "("         { 
@@ -179,11 +189,6 @@
 }
 
 [ \t]+      { /* Ignorar espaços e pulos de linha */ }
-
-\n          { 
-    printf("NLINE\n");
-    return '\n'; 
-}
 
 .           { printf("UNKNOWN(%s)\n", yytext); }
 
