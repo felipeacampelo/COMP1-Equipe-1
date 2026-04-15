@@ -97,10 +97,16 @@
     return ID; 
 }
 
-[0-9]+(\.[0-9]+)? { 
+[0-9]+\.[0-9]+      {
+    yylval.floatValue = atof(yytext);
+    printf("FLOAT_NUM(%s)\n", yytext);
+    return FLOAT_NUM;
+}
+
+[0-9]+      { 
     yylval.intValue = atoi(yytext); 
-    printf("NUM(%s)\n", yytext);
-    return NUM; 
+    printf("INT_NUM(%s)\n", yytext);
+    return INT_NUM; 
 }
 
 "++"        {

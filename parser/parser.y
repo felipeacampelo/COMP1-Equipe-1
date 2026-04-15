@@ -8,12 +8,14 @@ void yyerror(const char *s);
 
 %union{
     int intValue;
+    double floatValue;
     char *id;
 }
 
-%token <intValue> NUM
+%token <intValue> INT_NUM
+%token <floatValue> FLOAT_NUM
 %token <id> ID
-%token PLUS MINUS TIMES DIV DIV_ATRIBUTION TIMES_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
+%token PLUS PLUS_ATRIBUTION MINUS MINUS_ATRIBUTION TIMES TIMES_ATRIBUTION DIV DIV_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
@@ -27,13 +29,13 @@ void yyerror(const char *s);
 %left PLUS MINUS
 %left TIMES DIV
 
-%type <intValue> expr term factor
+%type <floatValue> expr term factor
 
 %%
 
 program:
-    program stmt '\n'
-    | stmt '\n'
+    program stmt  
+    | stmt
 ;
 
 stmt:
@@ -51,17 +53,16 @@ stmt:
     | FROM ID IMPORT ID { }
     | FROM ID IMPORT ID AS ID { }
     | IMPORT ID AS ID { }
+    | expr '\n'
 ;
 
 expr:
     expr PLUS term { $$ = $1 + $3; }
     | expr MINUS term { $$ = $1 - $3; }
-    | term { $$ = $1; }
     | expr MT expr { $$ = $1 > $3; }
     | expr LT expr { $$ = $1 < $3; } 
     | expr EQ expr { $$ = $1 == $3; }
-    | expr PLUS expr { $$ = $1 + $3; }
-    | expr MINUS expr { $$ = $1 - $3; }
+    | term { $$ = $1; }
 ;
 
 term:
@@ -71,9 +72,10 @@ term:
 ;
 
 factor:
-    NUM { }
-    | ID { }
-    | LPAREN expr RPAREN { }
+    FLOAT_NUM { $$ = $1; }
+    | INT_NUM { $$ = (double)$1; }
+    | ID { $$ = 0; }
+    | LPAREN expr RPAREN { $$ = $2; }
 ;
 
 %%
