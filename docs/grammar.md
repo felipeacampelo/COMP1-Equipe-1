@@ -5,7 +5,7 @@ title: Referência da Gramática
 
 # Referência da Gramática
 
-Esta página documenta a gramática que o parser atual realmente aceita.
+Esta página documenta a gramática que o parser atual aceita.
 
 ## Estrutura do Programa
 
@@ -70,7 +70,6 @@ Os operadores são avaliados na seguinte precedência (maior para menor):
 ## Observações importantes
 
 - O parser trabalha com comandos separados por nova linha.
-- Não há suporte a blocos indentados.
 - `if` e `while` aceitam apenas um único `stmt` como corpo.
 - A ordem do `else` segue o arquivo atual `parser.y`.
 - `FOR`, `INPUT`, `INT`, `DOUBLE`, `FLOAT`, `COMPLEX`, `INT_DIV`, `INT_DIV_ATRIBUTION`, `TIMES_ATRIBUTION`, `DIV_ATRIBUTION` e `INCREMENT` existem como tokens no lexer, mas ainda não aparecem em regras sintáticas completas.

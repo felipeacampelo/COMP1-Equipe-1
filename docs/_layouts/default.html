@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title | default: site.github.repository_name }}</title>
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
+      <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
+      {% if site.github.is_project_page %}
+        <a href="{{ site.github.repository_url }}" class="btn">Ver no GitHub</a>
+      {% endif %}
+    </header>
+
+    <nav class="main-nav">
+      <div class="nav-container">
+        <a href="{{ site.baseurl }}/" {% if page.url == "/" %}class="active"{% endif %}>Início</a>
+        <a href="{{ site.baseurl }}/sprints.html" {% if page.url contains "sprints" %}class="active"{% endif %}>Sprints</a>
+        <a href="{{ site.baseurl }}/grammar.html" {% if page.url contains "grammar" %}class="active"{% endif %}>Gramática</a>
+        <a href="{{ site.baseurl }}/lexer.html" {% if page.url contains "lexer" %}class="active"{% endif %}>Lexer</a>
+        <a href="{{ site.baseurl }}/parser.html" {% if page.url contains "parser" %}class="active"{% endif %}>Parser</a>
+        <a href="{{ site.baseurl }}/examples.html" {% if page.url contains "examples" %}class="active"{% endif %}>Exemplos</a>
+      </div>
+    </nav>
+
+    <main id="content" class="main-content" role="main">
+      {{ content }}
+
+      <footer class="site-footer">
+        {% if site.github.is_project_page %}
+          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> mantido por <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+        {% endif %}
+        <span class="site-footer-credits">Projeto COMP1 - Compiladores</span>
+      </footer>
+    </main>
+  </body>
+</html>
