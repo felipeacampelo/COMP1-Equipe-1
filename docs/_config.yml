@@ -1,0 +1,6 @@
+title: Documentação do Compilador COMP1
+description: Documentação para um compilador estilo Python construído com Flex e Bison
+theme: jekyll-theme-cayman
+show_downloads: true
+github:
+  repository_url: https://github.com/felipecampelo/COMP1-Equipe-1
