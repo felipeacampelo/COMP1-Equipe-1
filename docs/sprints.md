@@ -9,7 +9,7 @@ O projeto está organizado em sprints semanais para acompanhar a evolução da d
 
 ## Modelo de registro
 
-Cada sprint pode ser documentada com os seguintes campos:
+Cada sprint é documentada com os seguintes campos:
 
 - objetivo da sprint;
 - entregas previstas;
@@ -27,8 +27,7 @@ Definir o projeto, organizar o repositório e preparar o ambiente de desenvolvim
 ### Entregas
 - repositório criado;
 - estrutura inicial de diretórios;
-- definição do compilador como projeto central;
-- documentação inicial da proposta.
+- definição do compilador;
 
 ### Resultado esperado
 Uma base organizada para começar a implementação do analisador léxico.
@@ -60,46 +59,3 @@ Criar a primeira versão do parser e integrá-lo ao lexer.
 
 ### Resultado esperado
 Reconhecer um subconjunto pequeno da linguagem sem depender de geração de código.
-
-## Sprint 4 - Expansão da gramática e erros sintáticos
-
-### Objetivo
-Aumentar a cobertura sintática e melhorar a resposta a erros.
-
-### Entregas
-- novas regras gramaticais;
-- tratamento inicial de erro sintático;
-- revisão dos exemplos válidos e inválidos;
-- alinhamento entre documentação e implementação.
-
-### Resultado esperado
-Um parser mais estável e uma documentação mais fiel ao estado real do projeto.
-
-## Sprint 5 - Consolidação para o P1
-
-### Objetivo
-Consolidar a base do projeto para a apresentação do primeiro ponto de controle.
-
-### Entregas
-- visão geral do projeto;
-- documentação das sprints;
-- exemplos de uso compatíveis;
-- lista clara de limitações;
-- alinhamento do escopo para a próxima fase.
-
-### Resultado esperado
-O repositório apresentar claramente o que foi feito até aqui e qual será o próximo passo.
-
-## Depois do P1
-
-Após a primeira entrega, o projeto deve avançar para:
-
-- análise semântica;
-- tabela de símbolos;
-- construção de AST;
-- geração de código intermediário;
-- geração final em Java.
-
-## Observação
-
-O cronograma abaixo não substitui o planejamento da equipe, mas serve como base para o acompanhamento da evolução do projeto ao longo do semestre.
