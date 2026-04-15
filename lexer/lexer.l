@@ -2,7 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../parser/parser.tab.h" 
+#include "parser.tab.h"
+
+int indents[100];
+int top = 0;
+int pending_dents = 0;
+
+void push(int n){
+    top++;
+    indents[top] = n;
+}
+
+
 %}
 
 %%
@@ -194,7 +205,64 @@
     return COLON;
 }
 
+\n[ \t]*      { 
+                int indent = (yyleng-1) / 4; 
+                //printf("indent = %d vs top = %d, yyleng = %d\n", indent, indents[top], yyleng);
+                if(indent > indents[top]) {
+                    printf("INDENT: %d\n", indent);
+                    push(indent);
+                    return INDENT;
+                }
+                else if(indent < indents[top]) {
+                    
+                    while(indent < indents[top] && top > 0) {
+                        top--;
+                        pending_dents++;
+                    }
+                    if(pending_dents > 1){
+                        unput(yytext[0]);
+                    }
+
+                    pending_dents--;
+                    printf("DEDENT: %d\n", indent);
+                    return DEDENT;
+                }
+                else if(pending_dents >= 1){
+                    if(pending_dents > 1){
+                        unput(yytext[0]);
+                    }
+                    printf("PENDING DEDENT: %d\n", indent);
+                    pending_dents--;
+                    return DEDENT;
+                }
+                else{
+                    printf("NEWLINE\n");
+                    return NEWLINE;
+                }
+            
+            }
+
+
 [ \t]+      { /* Ignorar espaços e pulos de linha */ }
+
+<<EOF>>     {
+                if(pending_dents > 0){
+                    pending_dents--;
+                    //vai fazer o codigo voltar com um ultimo input vazio
+                    //so pra fazer o EOF rodar dnv
+                    unput(' ');
+                    printf("PENDING DEDENT EOF\n");
+                    return DEDENT;
+                }
+                if(indents[top] > 0){
+                    top--;
+                    unput(' ');
+                    printf("DEDENT EOF\n");
+                    return DEDENT;
+                }
+                //printf("EOF");
+                return EOF;
+            }
 
 .           { printf("UNKNOWN(%s)\n", yytext); }
 
@@ -204,6 +272,14 @@ int yywrap(void) {
     return 1;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+    indents[0] = 0;
+    /* Se houver arquivo de entrada como parâmetro, redireciona o yyin */
+    if (argc > 1) {
+        FILE *f = fopen(argv[1], "r");
+        if (f) {
+            yyin = f;
+        }
+    }
     return yyparse();
 }

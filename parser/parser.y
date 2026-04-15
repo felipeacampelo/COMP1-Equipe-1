@@ -24,6 +24,9 @@ void yyerror(const char *s);
 %token IMPORT FROM AS
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
+%token INDENT
+%token DEDENT
+%token NEWLINE
 
 %left MT LT EQ
 %left PLUS MINUS
@@ -40,9 +43,9 @@ program:
 
 stmt:
     ID ASSIGN term { }
-    | PRINT LPAREN expr RPAREN { }
-    | IF LPAREN expr RPAREN COLON stmt { }
-    | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
+    | PRINT LPAREN expr RPAREN { /*printf("print\n");*/ }
+    | IF expr COLON INDENT stmt DEDENT { printf("if reconhecido\n"); }
+    | IF expr COLON INDENT stmt DEDENT ELSE COLON INDENT stmt DEDENT { printf("if else reconhecido\n"); }
     | WHILE LPAREN expr RPAREN COLON stmt { }
     | expr { }
     | WHILE LPAREN expr RPAREN COLON { }
