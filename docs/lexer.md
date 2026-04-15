@@ -5,7 +5,7 @@ title: Documentação do Lexer
 
 # Analisador Léxico (Lexer)
 
-O lexer é implementado usando **Flex** (Fast Lexical Analyzer Generator). Ele lê o código fonte e converte em um fluxo de tokens.
+O lexer é implementado usando **Flex** (Fast Lexical Analyzer Generator). Ele lê o código fonte e converte o texto em um fluxo de tokens para o parser.
 
 ## Localização do Arquivo
 
@@ -31,6 +31,8 @@ lexer/lexer.l
 "float"     { printf("FLOAT(%s)\n", yytext); return FLOAT; }
 "complex"   { printf("COMPLEX(%s)\n", yytext); return COMPLEX; }
 ```
+
+Essas palavras são reconhecidas diretamente pelo scanner. Algumas delas ainda não têm regra sintática no parser.
 
 ### Operadores de Comparação
 ```flex
@@ -73,7 +75,7 @@ Corresponde a nomes de variáveis e funções começando com letra ou underscore
 }
 ```
 
-Corresponde a números inteiros e de ponto flutuante.
+Corresponde a números inteiros e de ponto flutuante. No estado atual, o valor semântico é convertido com `atoi`, então o parser ainda trata o dado como inteiro.
 
 ### Operadores Aritméticos
 ```flex
@@ -88,6 +90,8 @@ Corresponde a números inteiros e de ponto flutuante.
 "//"        { printf("INT_DIV(%s)\n", yytext); return INT_DIV; }
 "//="       { printf("INT_DIV_ATRIBUTION(%s)\n", yytext); return INT_DIV_ATRIBUTION; }
 ```
+
+Observação: a mensagem de debug de `=` imprime `ASSING(...)` no código atual, mas o token retornado é `ASSIGN`.
 
 ### Delimitadores
 ```flex

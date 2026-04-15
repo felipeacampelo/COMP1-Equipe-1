@@ -5,7 +5,7 @@ title: Referência da Gramática
 
 # Referência da Gramática
 
-Esta página documenta a gramática formal suportada pelo compilador COMP1.
+Esta página documenta a gramática que o parser atual realmente aceita.
 
 ## Estrutura do Programa
 
@@ -66,6 +66,14 @@ Os operadores são avaliados na seguinte precedência (maior para menor):
 2. `*` `/` - Multiplicação, Divisão
 3. `+` `-` - Adição, Subtração
 4. `>` `<` `==` - Operadores de comparação
+
+## Observações importantes
+
+- O parser trabalha com comandos separados por nova linha.
+- Não há suporte a blocos indentados.
+- `if` e `while` aceitam apenas um único `stmt` como corpo.
+- A ordem do `else` segue o arquivo atual `parser.y`.
+- `FOR`, `INPUT`, `INT`, `DOUBLE`, `FLOAT`, `COMPLEX`, `INT_DIV`, `INT_DIV_ATRIBUTION`, `TIMES_ATRIBUTION`, `DIV_ATRIBUTION` e `INCREMENT` existem como tokens no lexer, mas ainda não aparecem em regras sintáticas completas.
 
 ## Referência de Tokens
 

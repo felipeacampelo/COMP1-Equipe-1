@@ -5,9 +5,9 @@ title: Exemplos de Código
 
 # Exemplos de Código
 
-Esta página apresenta programas de exemplo que podem ser analisados pelo compilador COMP1.
+Esta página mostra exemplos alinhados com a gramática atual.
 
-## Programas Básicos
+## Exemplos aceitos hoje
 
 ### Olá Mundo
 
@@ -19,16 +19,15 @@ print("Hello, World!")
 
 ```python
 x = 10
-y = 20
-z = x + y
+z = x + 2
 print(z)
 ```
 
-### Entrada do Usuário
+### Expressão aritmética
 
 ```python
-n = int(input())
-print(n)
+a = 3 + 4 * 2
+print(a)
 ```
 
 ## Fluxo de Controle
@@ -60,103 +59,67 @@ i = 0
 
 while (i < 10):
     print(i)
-    i = i + 1
 ```
 
-## Programas Matemáticos
+## Importações
 
-### Conjetura de Collatz
-
-A Conjetura de Collatz é um famoso problema não resolvido da matemática.
-
-```python
-n = int(input())
-
-while(n != 1):
-    if n & 1:
-        n = 3*n + 1
-        print(n)
-    else:
-        n //= 2
-        print(n)
-```
-
-**Como funciona:**
-1. Comece com qualquer inteiro positivo n
-2. Se n é par, divida por 2
-3. Se n é ímpar, multiplique por 3 e adicione 1
-4. Repita até n se tornar 1
-
-## Exemplos de Importação
-
-### Importação Básica
+### Importação básica
 
 ```python
 import numpy
 ```
 
-### Importação com Alias
+### Importação com alias
 
 ```python
 import numpy as np
 ```
 
-### Importação From
+### Importação `from`
 
 ```python
 from math import sqrt
 ```
 
-### Importação From com Alias
+### Importação `from` com alias
 
 ```python
 from math import sqrt as square_root
 ```
 
-## Exemplos Complexos
+## Observações importantes
 
-Estes exemplos demonstram funcionalidades Python que podem ser alvos para desenvolvimento do compilador:
+- Cada comando deve terminar em nova linha.
+- Não há indentação obrigatória para blocos.
+- O corpo de `if` e `while` é apenas um único `stmt`.
+- `for`, `input`, declarações tipadas e atribuições compostas ainda não fazem parte da gramática atual.
 
-### Plotagem de Curva Elíptica
+## Ainda não aceitos pelo parser atual
 
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots()
-
-x = np.linspace(-10, 10, 1000000)
-y = np.sqrt(x**3 - 7*x + 10)
-yl = -np.sqrt(x**3 - 7*x + 10)
-
-ax.plot(x, y, color='blue')
-ax.plot(x, yl, color='blue')
-
-plt.show()
-```
-
-### Parabolóide 3D
+### Exemplo com `input`
 
 ```python
-import numpy as np
-import matplotlib.pyplot as plt
-
-x = np.linspace(-2, 2, 100)
-y = np.linspace(-2, 2, 100)
-
-X, Y = np.meshgrid(x, y)
-Z = X**2 + Y**2
-
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
-ax.plot_surface(X, Y, Z, cmap='viridis')
-
-plt.show()
+n = int(input())
 ```
+
+### Exemplo com laço `for`
+
+```python
+for i in range(10):
+    print(i)
+```
+
+### Exemplo com divisão inteira
+
+```python
+n //= 2
+```
+
+Esses casos ajudam a testar o que já foi tokenizado, mas ainda não tem regra completa no parser.
 
 ## Executando Exemplos
 
-Para testar um exemplo:
+Para testar um exemplo compatível:
 
 ```bash
 # Salvar em arquivo
@@ -171,7 +134,7 @@ EOF
 
 ## Adicionando Novos Exemplos
 
-Para adicionar um novo exemplo:
+Para adicionar um novo exemplo compatível:
 
 1. Crie um arquivo `.py` no diretório `src/`
 2. Siga a gramática suportada
@@ -179,19 +142,6 @@ Para adicionar um novo exemplo:
 
 ## Limitações
 
-Atualmente suportado:
-- ✅ Aritmética básica e comparações
-- ✅ Atribuição de variáveis
-- ✅ Comandos print
-- ✅ Condicionais if/else
-- ✅ Loops while
-- ✅ Importações
-- ✅ Comentários
-
-Ainda não implementado:
-- ❌ Definição de funções
-- ❌ Definição de classes
-- ❌ Literais de lista/dicionário
-- ❌ Operações com strings
-- ❌ Tratamento de exceções
-- ❌ List comprehensions
+- Funciona apenas com o subconjunto listado acima.
+- Não há suporte a blocos indentados.
+- O projeto ainda não gera código Java; neste momento ele só reconhece e valida a estrutura do código de entrada.

@@ -5,7 +5,7 @@ title: Documentação do Parser
 
 # Analisador Sintático (Parser)
 
-O parser é implementado usando **Bison** (GNU Parser Generator). Ele valida a sintaxe dos fluxos de tokens de acordo com as regras gramaticais.
+O parser é implementado usando **Bison** (GNU Parser Generator). Ele valida a sintaxe dos fluxos de tokens de acordo com as regras gramaticais atuais.
 
 ## Localização do Arquivo
 
@@ -99,6 +99,8 @@ stmt:
 ;
 ```
 
+Esse conjunto cobre a forma atual do projeto: programas compostos por uma sequência de linhas, com uma instrução por linha.
+
 ### Expressões
 ```yacc
 expr:
@@ -113,7 +115,7 @@ expr:
 ;
 ```
 
-Ações semânticas realizam computação real durante o parsing.
+Ações semânticas existem para expressões e termos, mas a propagação de valores ainda é parcial porque `factor` ainda não atribui `$$` para todos os casos.
 
 ### Termos
 ```yacc
@@ -141,7 +143,7 @@ void yyerror(const char *s){
 }
 ```
 
-Atualmente fornece relatório de erro mínimo. Mensagens de erro aprimoradas com números de linha seriam uma boa melhoria.
+Atualmente fornece relatório de erro mínimo.
 
 ## Compilando o Parser
 
@@ -155,8 +157,8 @@ Isso gera:
 
 ## Melhorias Futuras
 
-1. **Ações Semânticas** - Preencher ações vazias `{}` com geração de código
+1. **Ações Semânticas** - Completar a propagação de valores em `factor` e nas regras de comando
 2. **Recuperação de Erros** - Melhor tratamento de erros e sincronização
 3. **Tabela de Símbolos** - Rastrear declarações e tipos de variáveis
 4. **Verificação de Tipos** - Validar tipos de operandos em expressões
-5. **Geração de Código** - Gerar código alvo (assembly, bytecode, etc.)
+5. **Geração de Código** - Gerar código alvo (Java, no caso do projeto da equipe)

@@ -3,9 +3,9 @@ layout: default
 title: Início
 ---
 
-# Compilador COMP1
+# Compilador Python -> Java
 
-Um compilador para linguagem de programação estilo Python construído com **Flex** (analisador léxico) e **Bison** (gerador de parser).
+Este repositório documenta o desenvolvimento de um compilador para um subconjunto de Python com saída planejada em Java. O projeto usa **Flex** para análise léxica e **Bison** para análise sintática, seguindo uma evolução incremental ao longo do semestre.
 
 ## Início Rápido
 
@@ -19,6 +19,53 @@ make all
 # Limpar arquivos gerados
 make clean
 ```
+
+## Visão Geral
+
+O objetivo do projeto é construir um compilador para um subconjunto de Python, começando pela leitura de tokens e validação sintática e evoluindo depois para análise semântica, representação intermediária e geração de código em Java.
+
+O foco atual está na base do compilador:
+
+- reconhecer a entrada com Flex;
+- validar a estrutura sintática com Bison;
+- manter a documentação coerente com o estado real do protótipo;
+- preparar a transição para as próximas fases do semestre.
+
+## Integrantes do Grupo
+
+| Nome | Matrícula |
+|---|---|
+| Marcus Vinicius Cunha Dantas | 211031403 |
+| Isaac Menezes Pereira | 190088885 |
+| Felipe de Aquino Campelo | 231011328 |
+| Pablo Rodrigues Lima | 231029841 |
+| Samuel Alves Silva | 202063462 |
+
+## Estado Atual
+
+### O parser aceita hoje
+
+- atribuição com `=`
+- `print(...)`
+- `if (...) : stmt`
+- `while (...) : stmt`
+- `import id`
+- `import id as id`
+- `from id import id`
+- `from id import id as id`
+- expressões com `+`, `-`, `*`, `/`
+- comparações com `==`, `!=`, `>` e `<`
+
+### O lexer já reconhece, mas o parser ainda não usa em regras completas
+
+- `for`
+- `input`
+- `int`, `double`, `float`, `complex`
+- `++`
+- `*=`, `/=`, `//=`
+- `//`
+
+Esses tokens existem no scanner, mas ainda não fazem parte de uma gramática final.
 
 ## Estrutura do Projeto
 
@@ -37,43 +84,28 @@ COMP1-Equipe-1/
 └── docs/           # Documentação
 ```
 
-## Funcionalidades Suportadas
+## Como a documentação está organizada
 
-### Palavras-chave
-| Palavra-chave | Descrição |
-|---------|-------------|
-| `print` | Comando de saída |
-| `if` / `else` | Comandos condicionais |
-| `while` | Comando de loop |
-| `for` | Loop for |
-| `import` / `from` / `as` | Importação de módulos |
-| `input` | Entrada do usuário |
-| `int`, `double`, `float`, `complex` | Declarações de tipo |
+- [Visão geral](./index.md): objetivo, estado atual e estrutura do projeto.
+- [Sprints](./sprints.md): planejamento e registro da evolução do projeto.
+- [Gramática](./grammar.md): referência do subconjunto aceito pelo parser.
+- [Lexer](./lexer.md): tokens reconhecidos pelo analisador léxico.
+- [Parser](./parser.md): regras sintáticas e observações sobre o comportamento atual.
+- [Exemplos](./examples.md): entradas válidas, limitações e casos em preparação.
 
-### Operadores
-- **Aritméticos**: `+`, `-`, `*`, `/`, `//` (divisão inteira)
-- **Atribuição**: `=`, `*=`, `/=`, `//=`
-- **Comparação**: `==`, `!=`, `>`, `<`
-- **Incremento**: `++`
-- **Lógico**: `!` (não)
+## Regras de uso atuais
 
-## Programas de Exemplo
+- Cada comando precisa terminar com quebra de linha.
+- Não há blocos indentados no estilo Python.
+- `if` e `while` aceitam apenas um `stmt` como corpo.
+- O projeto ainda está na etapa de base sintática, antes da geração de código Java.
 
-### Conjetura de Collatz
+## Exemplo compatível com a gramática atual
 
 ```python
-n = int(input())
-
-while(n != 1):
-    if n & 1:
-        n = 3*n + 1
-        print(n)
-    else:
-        n //= 2
-        print(n)
+x = 10 + 2
+print(x)
 ```
-
-Veja mais exemplos no diretório [src/](https://github.com/felipecampelo/COMP1-Equipe-1/tree/main/src).
 
 ## Arquitetura
 
@@ -85,12 +117,20 @@ O lexer (`lexer.l`) tokeniza o código fonte em tokens:
 - Comentários (linha única `#` e bloco `/* */`)
 
 ### 2. Parsing
-O parser (`parser.y`) valida a sintaxe e constrói a árvore de parsing:
+O parser (`parser.y`) valida a sintaxe de programas separados por linha:
 - Avaliação de expressões com precedência de operadores
 - Parsing de comandos (atribuições, condicionais, loops)
 - Tratamento de importações
 
-### 3. Processo de Build
+### 3. Evolução Planejada
+Depois da base léxica e sintática, o projeto deve evoluir para:
+
+- análise semântica;
+- AST mais estruturada;
+- geração de código intermediário;
+- tradução final para Java.
+
+### 4. Processo de Build
 ```
 1. bison -d parser/parser.y -o parser/parser.tab.c
 2. flex -o lexer/lex.yy.c lexer/lexer.l
