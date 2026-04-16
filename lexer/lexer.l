@@ -105,8 +105,8 @@
 
 [0-9]+      { 
     yylval.intValue = atoi(yytext); 
-    printf("INT_NUM(%s)\n", yytext);
-    return INT_NUM; 
+    printf("NUM(%s)\n", yytext);
+    return NUM;
 }
 
 "++"        {
@@ -175,7 +175,7 @@
 }
 
 "="         { 
-    printf("ASSING(%s)\n", yytext);
+    // printf("ASSING(%s)\n", yytext);
     return ASSIGN; 
 }
 
@@ -194,8 +194,8 @@
     return COLON;
 }
 
-[ \t]+      { /* Ignorar espaços e pulos de linha */ }
-
+"\n"        { return '\n'; }
+[ \t\r\n]+    { /* ignora oq der ai */ }
 .           { printf("UNKNOWN(%s)\n", yytext); }
 
 %%
