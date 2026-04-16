@@ -14,7 +14,7 @@ void yyerror(const char *s);
     struct ast_node *node;
 }
 
-%token <intValue> INT_NUM
+%token <intValue> NUM
 %token <floatValue> FLOAT_NUM
 %token <id> ID
 %token PLUS PLUS_ATRIBUTION MINUS MINUS_ATRIBUTION TIMES TIMES_ATRIBUTION DIV DIV_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
@@ -36,43 +36,39 @@ void yyerror(const char *s);
 %%
 
 program:
-    program stmt '\n' { print_tree($2, 0); printf("\n"); }
-    | stmt '\n'       { print_tree($1, 0); printf("\n"); }
+      /* vazio */ { $$ = NULL; }
+    | program stmt '\n' { if ($2) { print_tree($2, 0); printf("\n"); } }
+    | program stmt      { if ($2) { print_tree($2, 0); printf("\n"); } }
+    | program '\n'      { /* ignora linhas vazias */ }
     | program error '\n' { 
-        printf("[ERRO] Sintaxe invalida! Ignorando esta linha e continuando o programa...\n"); 
         yyerrok; 
         yyclearin; 
-    }
-    | error '\n' { 
-        printf("[ERRO] Sintaxe invalida! Ignorando esta linha e continuando o programa...\n"); 
-        yyerrok; 
-        yyclearin; 
+        printf("[ERRO] Sintaxe invalida nesta linha\n"); 
     }
 ;
 
 stmt:
-    stmt:
     ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
-    | PRINT LPAREN expr RPAREN { }
-    | IF LPAREN expr RPAREN COLON stmt { }
-    | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
-    | WHILE LPAREN expr RPAREN COLON stmt { }
-    | expr { }
-    | WHILE LPAREN expr RPAREN COLON { }
-    | WHILE LPAREN term RPAREN COLON { }
-    | IF LPAREN expr RPAREN COLON { }
-    | IF LPAREN term RPAREN COLON { }
+    | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
+    | IF LPAREN expr RPAREN COLON stmt { $$ = create_if_node($3, $6); }
+    // | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
+    | WHILE LPAREN expr RPAREN COLON stmt { $$ = create_while_node($3, $6);}
+    | expr { $$ = $1; }
+    // | WHILE LPAREN expr RPAREN COLON { }
+    // | WHILE LPAREN term RPAREN COLON { }
+    // | IF LPAREN expr RPAREN COLON { }
+    // | IF LPAREN term RPAREN COLON { }
     | IMPORT ID { }
     | FROM ID IMPORT ID { }
     | FROM ID IMPORT ID AS ID { }
     | IMPORT ID AS ID { }
-    | expr '\n'
 ;
 
 expr:
-    expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
+      term
+    | expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
-    | term          { $$ = $1; }
+    | expr MT term    { $$ = create_op_node(NODE_OP, $1, $3); }
 ;
 
 term:
@@ -82,8 +78,9 @@ term:
 ;
 
 factor:
-    NUM { $$ = create_int_node($1); }
-    | ID  { $$ = create_id_node($1); }
+    NUM         { $$ = create_int_node($1); }
+    | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
+    | ID        { $$ = create_id_node($1); }
     | LPAREN expr RPAREN { $$ = $2; }
 ;
 

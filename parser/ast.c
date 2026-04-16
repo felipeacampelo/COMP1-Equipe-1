@@ -29,18 +29,74 @@ ASTNode* create_op_node(NodeType type, ASTNode *left, ASTNode *right) {
     return node;
 }
 
-// Visualizador simples da árvore no terminal
+ASTNode* create_if_node(ASTNode *codition, ASTNode *body) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_IF;
+    node->left = codition;
+    node->right = body;
+    return node;
+}
+
+ASTNode* create_while_node(ASTNode *codition, ASTNode *body) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_WHILE;
+    node->left = codition;
+    node->right = body;
+    return node;
+}
+
+ASTNode* create_print_node(ASTNode *expr) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_PRINT;
+    node->left = expr;
+    node->right = NULL;
+    return node;
+}
+
+// Visualizador da árvore no terminal
 void print_tree(ASTNode *node, int level) {
     if (!node) return;
     for (int i = 0; i < level; i++) printf("  ");
 
     switch (node->type) {
-        case NODE_INT: printf("NUM: %d\n", node->int_val); break;
-        case NODE_ID:  printf("ID: %s\n", node->id_val); break;
-        case NODE_OP:  printf("OPERADOR\n"); break;
-        case NODE_ASSIGN: printf("=\n"); break;
-        default: printf("NO\n");
+        case NODE_INT: 
+            printf("NUM: %d\n", node->int_val); 
+            break;
+
+        case NODE_ID:  
+            printf("ID: %s\n", node->id_val); 
+            break;
+
+        case NODE_OP:  
+            printf("OPERADOR\n"); 
+            print_tree(node->left, level + 1);
+            print_tree(node->right, level + 1);
+            break;
+
+        case NODE_ASSIGN: 
+            printf("=\n"); 
+            print_tree(node->left, level + 1);
+            print_tree(node->right, level + 1);
+            break;
+
+        case NODE_PRINT:
+            printf("PRINT\n");
+            print_tree(node->left, level + 1);
+            break;
+
+        case NODE_IF:
+            printf("IF\n");
+            print_tree(node->left, level + 1); // Condição
+            print_tree(node->right, level + 1); // Corpo
+            break;
+
+        case NODE_WHILE:
+            printf("WHILE\n");
+            print_tree(node->left, level + 1);
+            print_tree(node->right, level + 1);
+            break;    
+
+        default: printf("No que nao sabemos\n");
     }
-    print_tree(node->left, level + 1);
-    print_tree(node->right, level + 1);
+    
 }
