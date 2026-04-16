@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "ast.h"
 
 int yylex();
 void yyerror(const char *s);
@@ -9,6 +10,7 @@ void yyerror(const char *s);
 %union{
     int intValue;
     char *id;
+    struct ast_node *node;
 }
 
 %token <intValue> NUM
@@ -27,17 +29,28 @@ void yyerror(const char *s);
 %left PLUS MINUS
 %left TIMES DIV
 
-%type <intValue> expr term factor
+%type <node> expr term factor stmt program
 
 %%
 
 program:
-    program stmt '\n'
-    | stmt '\n'
+    program stmt '\n' { print_tree($2, 0); printf("\n"); }
+    | stmt '\n'       { print_tree($1, 0); printf("\n"); }
+    | program error '\n' { 
+        printf("[ERRO] Sintaxe invalida! Ignorando esta linha e continuando o programa...\n"); 
+        yyerrok; 
+        yyclearin; 
+    }
+    | error '\n' { 
+        printf("[ERRO] Sintaxe invalida! Ignorando esta linha e continuando o programa...\n"); 
+        yyerrok; 
+        yyclearin; 
+    }
 ;
 
 stmt:
-    ID ASSIGN term { }
+    stmt:
+    ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
     | PRINT LPAREN expr RPAREN { }
     | IF LPAREN expr RPAREN COLON stmt { }
     | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
@@ -54,26 +67,21 @@ stmt:
 ;
 
 expr:
-    expr PLUS term { $$ = $1 + $3; }
-    | expr MINUS term { $$ = $1 - $3; }
-    | term { $$ = $1; }
-    | expr MT expr { $$ = $1 > $3; }
-    | expr LT expr { $$ = $1 < $3; } 
-    | expr EQ expr { $$ = $1 == $3; }
-    | expr PLUS expr { $$ = $1 + $3; }
-    | expr MINUS expr { $$ = $1 - $3; }
+    expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
+    | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
+    | term          { $$ = $1; }
 ;
 
 term:
-    term TIMES factor { $$ = $1 * $3; }
-    | term DIV factor { $$ = $1 / $3; }
-    | factor { $$ = $1; }
+    term TIMES factor { $$ = create_op_node(NODE_OP, $1, $3); }
+    | term DIV factor { $$ = create_op_node(NODE_OP, $1, $3); }
+    | factor          { $$ = $1; }
 ;
 
 factor:
-    NUM { }
-    | ID { }
-    | LPAREN expr RPAREN { }
+    NUM { $$ = create_int_node($1); }
+    | ID  { $$ = create_id_node($1); }
+    | LPAREN expr RPAREN { $$ = $2; }
 ;
 
 %%
