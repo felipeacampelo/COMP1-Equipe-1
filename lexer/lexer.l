@@ -72,14 +72,9 @@
     return COMPLEX;
 }
 
-"=="        { 
-    printf("EQ(%s)\n", yytext);
-    return EQ; 
-}
-
-"!="        {
-    printf("DIFF(%s)\n", yytext);
-    return DIFF;
+"!"         {
+    printf("NOT(%s)\n", yytext);
+    return NOT;
 }
 
 ">"         { 
@@ -92,11 +87,6 @@
     return LT; 
 }
 
-"!"         {
-    printf("NOT(%s)\n", yytext);
-    return NOT;
-}
-
 "#".*      { /* Ignorar comentário de linha */ }
 
 "/*"([^*]|\*+[^*/])*\*+\/    { /* Ignorar comentários de bloco */ }
@@ -107,20 +97,16 @@
     return ID; 
 }
 
-[0-9]+(\.[0-9]+)? { 
+[0-9]+\.[0-9]+      {
+    yylval.floatValue = atof(yytext);
+    printf("FLOAT_NUM(%s)\n", yytext);
+    return FLOAT_NUM;
+}
+
+[0-9]+      { 
     yylval.intValue = atoi(yytext); 
-    printf("NUM(%s)\n", yytext);
-    return NUM; 
-}
-
-"="         { 
-    printf("ASSING(%s)\n", yytext);
-    return ASSIGN; 
-}
-
-"+"         { 
-    printf("PLUS(%s)\n", yytext);
-    return PLUS; 
+    printf("INT_NUM(%s)\n", yytext);
+    return INT_NUM; 
 }
 
 "++"        {
@@ -128,14 +114,24 @@
     return INCREMENT;
 }
 
+"+="        {
+    printf("PLUS_ATRIBUTION(%s)\n", yytext);
+    return PLUS_ATRIBUTION;
+}
+
+"+"         { 
+    printf("PLUS(%s)\n", yytext);
+    return PLUS; 
+}
+
+"-="        {
+    printf("MINUS_ATRIBUTION(%s)\n", yytext);
+    return MINUS_ATRIBUTION;
+}
+
 "-"         { 
     printf("MINUS(%s)\n", yytext);
     return MINUS; 
-}
-
-"*"         { 
-    printf("TIMES(%s)\n", yytext);
-    return TIMES; 
 }
 
 "*="        {
@@ -143,9 +139,14 @@
     return TIMES_ATRIBUTION;
 }
 
-"/"         { 
-    printf("DIV(%s)\n", yytext);
-    return DIV; 
+"*"         { 
+    printf("TIMES(%s)\n", yytext);
+    return TIMES; 
+}
+
+"//="       {
+    printf("INT_DIV_ATRIBUTION(%s)\n", yytext);
+    return INT_DIV_ATRIBUTION;
 }
 
 "/="        {
@@ -158,9 +159,24 @@
     return INT_DIV;
 }
 
-"//="       {
-    printf("INT_DIV_ATRIBUTION(%s)\n", yytext);
-    return INT_DIV_ATRIBUTION;
+"/"         { 
+    printf("DIV(%s)\n", yytext);
+    return DIV; 
+}
+
+"=="        { 
+    printf("EQ(%s)\n", yytext);
+    return EQ; 
+}
+
+"!="        {
+    printf("DIFF(%s)\n", yytext);
+    return DIFF;
+}
+
+"="         { 
+    printf("ASSING(%s)\n", yytext);
+    return ASSIGN; 
 }
 
 "("         { 
@@ -179,11 +195,6 @@
 }
 
 [ \t]+      { /* Ignorar espaços e pulos de linha */ }
-
-\n          { 
-    printf("NLINE\n");
-    return '\n'; 
-}
 
 .           { printf("UNKNOWN(%s)\n", yytext); }
 

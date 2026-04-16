@@ -9,13 +9,15 @@ void yyerror(const char *s);
 
 %union{
     int intValue;
+    double floatValue;
     char *id;
     struct ast_node *node;
 }
 
-%token <intValue> NUM
+%token <intValue> INT_NUM
+%token <floatValue> FLOAT_NUM
 %token <id> ID
-%token PLUS MINUS TIMES DIV DIV_ATRIBUTION TIMES_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
+%token PLUS PLUS_ATRIBUTION MINUS MINUS_ATRIBUTION TIMES TIMES_ATRIBUTION DIV DIV_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
@@ -64,6 +66,7 @@ stmt:
     | FROM ID IMPORT ID { }
     | FROM ID IMPORT ID AS ID { }
     | IMPORT ID AS ID { }
+    | expr '\n'
 ;
 
 expr:

@@ -1,5 +1,5 @@
 # Nome do executável final
-TARGET = compilador
+TARGET = compiladorpj
 
 all:
  #Gera o arquivo do bison
