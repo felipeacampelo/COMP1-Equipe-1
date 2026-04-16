@@ -9,7 +9,8 @@ typedef enum {
     NODE_PRINT,    // Comando print
     NODE_ASSIGN,   // Atribuição (=)
     NODE_IF,        // Comando If
-    NODE_WHILE     // Comando while
+    NODE_WHILE,     // Comando while
+    NODE_BLOCK
 } NodeType;
 
 typedef struct ast_node {
@@ -28,6 +29,7 @@ ASTNode* create_op_node(NodeType type, ASTNode *left, ASTNode *right);
 ASTNode* create_print_node(ASTNode *expr);
 ASTNode* create_if_node(ASTNode *codition, ASTNode *body);
 ASTNode* create_while_node(ASTNode *codition, ASTNode *body);
+ASTNode* create_block_node(ASTNode *v1, ASTNode *v2);
 void print_tree(ASTNode *node, int level);
 
 #endif
