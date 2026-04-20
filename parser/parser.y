@@ -26,33 +26,45 @@ void yyerror(const char *s);
 %token IMPORT FROM AS
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
+%token INDENT DEDENT NEWLINE
 
 %left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
 
-%type <node> expr term factor stmt program
+%type <node> expr term factor stmt stmt_list program
 
 %%
 
 program:
-      /* vazio */ { $$ = NULL; }
-    | program stmt '\n' { if ($2) { print_tree($2, 0); printf("\n"); } }
-    | program stmt      { if ($2) { print_tree($2, 0); printf("\n"); } }
-    | program '\n'      { /* ignora linhas vazias */ }
-    | program error '\n' { 
+    stmt_list { 
+        if ($1) { 
+            print_tree($1, 0); 
+            printf("\n"); 
+        } 
+    }
+;
+
+stmt_list:
+      stmt               { $$ = $1; }
+    | stmt_list stmt     { $$ = create_block_node($1, $2); }
+    | stmt_list NEWLINE  { $$ = $1; } /* Aceita quebras de linha normais */
+    | NEWLINE            { $$ = NULL; }
+    | error NEWLINE      { 
         yyerrok; 
         yyclearin; 
-        printf("[ERRO] Sintaxe invalida nesta linha\n"); 
+        printf("[ERRO] Sintaxe invalida nesta linha. Pulando para a proxima...\n"); 
+        $$ = NULL; 
     }
+;
 ;
 
 stmt:
     ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
     | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
-    | IF LPAREN expr RPAREN COLON stmt { $$ = create_if_node($3, $6); }
+    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_if_node($3, $7); }
     // | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
-    | WHILE LPAREN expr RPAREN COLON stmt { $$ = create_while_node($3, $6);}
+    | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
     | expr { $$ = $1; }
     // | WHILE LPAREN expr RPAREN COLON { }
     // | WHILE LPAREN term RPAREN COLON { }

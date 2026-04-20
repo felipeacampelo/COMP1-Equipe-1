@@ -53,6 +53,13 @@ ASTNode* create_print_node(ASTNode *expr) {
     return node;
 }
 
+ASTNode* create_block_node(ASTNode *v1, ASTNode *v2) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_BLOCK;
+    node->left = v1;
+    node->right = v2;
+    return node;
+}
 // Visualizador da árvore no terminal
 void print_tree(ASTNode *node, int level) {
     if (!node) return;
@@ -94,7 +101,12 @@ void print_tree(ASTNode *node, int level) {
             printf("WHILE\n");
             print_tree(node->left, level + 1);
             print_tree(node->right, level + 1);
-            break;    
+            break;
+
+        case NODE_BLOCK:
+            if (node->left) print_tree(node->left, level);
+            if (node->right) print_tree(node->right, level);
+            break;        
 
         default: printf("No que nao sabemos\n");
     }
