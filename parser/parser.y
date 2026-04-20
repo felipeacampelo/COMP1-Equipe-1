@@ -50,6 +50,13 @@ stmt_list:
     | stmt_list stmt     { $$ = create_block_node($1, $2); }
     | stmt_list NEWLINE  { $$ = $1; } /* Aceita quebras de linha normais */
     | NEWLINE            { $$ = NULL; }
+    | error NEWLINE      { 
+        yyerrok; 
+        yyclearin; 
+        printf("[ERRO] Sintaxe invalida nesta linha. Pulando para a proxima...\n"); 
+        $$ = NULL; 
+    }
+;
 ;
 
 stmt:
