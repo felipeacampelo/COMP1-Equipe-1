@@ -60,6 +60,33 @@ ASTNode* create_block_node(ASTNode *v1, ASTNode *v2) {
     node->right = v2;
     return node;
 }
+
+ASTNode* create_for_node(ASTNode *v1, ASTNode *v2){
+    ASTNode *node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_FOR;
+    node->left = v1;
+    node->right = v2;
+    return node;
+}
+
+ASTNode* create_range_node(ASTNode*de_num, ASTNode*ate_num){
+    if(de_num > ate_num) return NULL;
+    ASTNode *node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_RANGE;
+    node->left = de_num;
+    node->right = ate_num;
+    return node;
+}
+
+ASTNode* create_array_node(ASTNode*v1, ASTNode*v2){
+    ASTNode *node = (ASTNode*)malloc(sizeof(ASTNode));
+    node->type = NODE_ARRAY;
+    node->left = v1;
+    node->right = v2;
+    return node;
+}
+
+
 // Visualizador da árvore no terminal
 void print_tree(ASTNode *node, int level) {
     if (!node) return;

@@ -21,7 +21,7 @@ void yyerror(const char *s);
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
-%token IF ELSE WHILE FOR COLON
+%token IF ELSE WHILE FOR IN COLON RANGE
 %token MT LT EQ DIFF NOT
 %token IMPORT FROM AS
 %token INPUT 
@@ -32,7 +32,7 @@ void yyerror(const char *s);
 %left PLUS MINUS
 %left TIMES DIV
 
-%type <node> expr term factor stmt stmt_list program
+%type <node> expr term factor stmt stmt_list program array
 
 %%
 
@@ -66,6 +66,7 @@ stmt:
     // | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
     | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
     | expr { $$ = $1; }
+    | FOR ID IN expr COLON INDENT stmt_list DEDENT { $$ = create_for_node($2, $7); }
     // | WHILE LPAREN expr RPAREN COLON { }
     // | WHILE LPAREN term RPAREN COLON { }
     // | IF LPAREN expr RPAREN COLON { }
@@ -81,6 +82,13 @@ expr:
     | expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MT term    { $$ = create_op_node(NODE_OP, $1, $3); }
+    | RANGE LPAREN expr ',' expr RPAREN { $$ = create_range_node($3, $5); }
+    | '[' array ']' { $$ = $2; }
+;
+
+array:
+      NUM {$$ = create_array_node(NULL, $1) }
+    | array ',' NUM { $$ = create_array_node($1, $3); } 
 ;
 
 term:

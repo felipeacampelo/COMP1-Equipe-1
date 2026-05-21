@@ -42,6 +42,10 @@ void push(int n){
     return FOR;
 }
 
+"range"     {
+    return RANGE;
+}
+
 "import"    {
     //printf("IMPORT(%s)\n", yytext);
     return IMPORT;
@@ -65,6 +69,11 @@ void push(int n){
 "int"       {
    // printf("INT(%s)\n", yytext);
     return INT;
+}
+
+"in"        {
+    // printf("IN\n");
+    return IN;
 }
 
 "double"    {
@@ -256,6 +265,7 @@ void push(int n){
 int yywrap(void) {
     return 1;
 }
+
 
 int main(void) {
     return yyparse();
