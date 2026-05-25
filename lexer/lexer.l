@@ -42,6 +42,10 @@ void push(int n){
     return FOR;
 }
 
+"range"     {
+    return RANGE;
+}
+
 "import"    {
     //printf("IMPORT(%s)\n", yytext);
     return IMPORT;
@@ -67,6 +71,11 @@ void push(int n){
     return INT;
 }
 
+"in"        {
+    // printf("IN\n");
+    return IN;
+}
+
 "double"    {
    // printf("DOUBLE(%s)\n", yytext);
     return DOUBLE;
@@ -80,6 +89,10 @@ void push(int n){
 "complex"   {
    // printf("COMPLEX(%s)\n", yytext);
     return COMPLEX;
+}
+
+"\""         {
+    return ASPAS;
 }
 
 "!"         {
@@ -257,6 +270,7 @@ int yywrap(void) {
     return 1;
 }
 
-int main(void) {
-    return yyparse();
-}
+
+//int main(void) {
+//    return yyparse();
+//}
