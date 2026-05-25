@@ -2,8 +2,10 @@
 #include "parser/ast.h"
 #include "java_gen.h"
 
+
 extern FILE *yyin;
 extern ASTNode *root;
+extern int yyparse();
 
 int main(int argc, char **argv){
     if(argc <2){

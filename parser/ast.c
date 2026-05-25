@@ -21,9 +21,10 @@ ASTNode* create_id_node(char *id) {
     return node;
 }
 
-ASTNode* create_op_node(NodeType type, ASTNode *left, ASTNode *right) {
+ASTNode* create_op_node(char *op, ASTNode *left, ASTNode *right) {
     ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
-    node->type = type;
+    node->type = NODE_OP;
+    node->id_val = strdup(op);
     node->left = left;
     node->right = right;
     return node;
@@ -61,28 +62,28 @@ ASTNode* create_block_node(ASTNode *v1, ASTNode *v2) {
     return node;
 }
 
-ASTNode* create_for_node(ASTNode *v1, ASTNode *v2){
+ASTNode* create_for_node(char *var, ASTNode *loop_limit, ASTNode *loop_body){
     ASTNode *node = (ASTNode*)malloc(sizeof(ASTNode));
     node->type = NODE_FOR;
-    node->left = v1;
-    node->right = v2;
+    node->id_val = strdup(var);
+    node->left = loop_limit;
+    node->right = loop_body;
     return node;
 }
 
-ASTNode* create_range_node(ASTNode*de_num, ASTNode*ate_num){
-    if(de_num > ate_num) return NULL;
+ASTNode* create_range_node(ASTNode*de_num){
+    //if(de_num > ate_num) return NULL;
     ASTNode *node = (ASTNode*)malloc(sizeof(ASTNode));
     node->type = NODE_RANGE;
-    node->left = de_num;
-    node->right = ate_num;
+    node->right = de_num;
     return node;
 }
 
-ASTNode* create_array_node(ASTNode*v1, ASTNode*v2){
+ASTNode* create_array_node(ASTNode*resto_do_array, int valor){
     ASTNode *node = (ASTNode*)malloc(sizeof(ASTNode));
     node->type = NODE_ARRAY;
-    node->left = v1;
-    node->right = v2;
+    node->left = resto_do_array;
+    node->int_val = valor;
     return node;
 }
 
@@ -134,6 +135,20 @@ void print_tree(ASTNode *node, int level) {
             if (node->left) print_tree(node->left, level);
             if (node->right) print_tree(node->right, level);
             break;        
+
+        case NODE_FOR:
+            printf("FOR: %s\n", node->id_val);
+            if (node->left){
+                //printf("no range = %d\n", node->left->type);
+                print_tree(node->left, level);
+            }
+            if (node->right) print_tree(node->right, level+1);
+            break;
+        
+        case NODE_RANGE:
+            printf("RANGE %d\n", node->right->int_val);
+            print_tree(node->right, level);
+            break;
 
         default: printf("No que nao sabemos\n");
     }

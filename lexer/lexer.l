@@ -91,6 +91,10 @@ void push(int n){
     return COMPLEX;
 }
 
+"\""         {
+    return ASPAS;
+}
+
 "!"         {
    // printf("NOT(%s)\n", yytext);
     return NOT;
@@ -267,6 +271,6 @@ int yywrap(void) {
 }
 
 
-int main(void) {
-    return yyparse();
-}
+//int main(void) {
+//    return yyparse();
+//}

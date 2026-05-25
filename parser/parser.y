@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "ast.h"
 
+ASTNode *root;
 int yylex();
 void yyerror(const char *s);
 %}
@@ -20,7 +21,7 @@ void yyerror(const char *s);
 %token PLUS PLUS_ATRIBUTION MINUS MINUS_ATRIBUTION TIMES TIMES_ATRIBUTION DIV DIV_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
 %token ASSIGN
 %token LPAREN RPAREN
-%token PRINT
+%token PRINT ASPAS
 %token IF ELSE WHILE FOR IN COLON RANGE
 %token MT LT EQ DIFF NOT
 %token IMPORT FROM AS
@@ -40,6 +41,7 @@ program:
     stmt_list { 
         if ($1) { 
             print_tree($1, 0); 
+            root = $1;
             printf("\n"); 
         } 
     }
@@ -60,13 +62,13 @@ stmt_list:
 ;
 
 stmt:
-    ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
-    | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
+    ID ASSIGN expr { $$ = create_op_node("=", create_id_node($1), $3); }
+    | PRINT LPAREN ASPAS expr ASPAS RPAREN { $$ = create_print_node($4); }
     | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_if_node($3, $7); }
     // | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
     | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
     | expr { $$ = $1; }
-    | FOR ID IN expr COLON INDENT stmt_list DEDENT { $$ = create_for_node($2, $7); }
+    | FOR ID IN expr COLON INDENT stmt_list DEDENT { $$ = create_for_node($2, $4, $7); }
     // | WHILE LPAREN expr RPAREN COLON { }
     // | WHILE LPAREN term RPAREN COLON { }
     // | IF LPAREN expr RPAREN COLON { }
@@ -79,21 +81,22 @@ stmt:
 
 expr:
       term
-    | expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
-    | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
-    | expr MT term    { $$ = create_op_node(NODE_OP, $1, $3); }
-    | RANGE LPAREN expr ',' expr RPAREN { $$ = create_range_node($3, $5); }
+    | expr PLUS term  { $$ = create_op_node("+", $1, $3); }
+    | expr MINUS term { $$ = create_op_node("-", $1, $3); }
+    | expr MT term    { $$ = create_op_node(">", $1, $3); }
+    | expr LT term    { $$ = create_op_node("<", $1, $3); }
+    | RANGE LPAREN term RPAREN { $$ = create_range_node($3); }
     | '[' array ']' { $$ = $2; }
 ;
 
 array:
-      NUM {$$ = create_array_node(NULL, $1) }
+      NUM {$$ = create_array_node(NULL, $1); }
     | array ',' NUM { $$ = create_array_node($1, $3); } 
 ;
 
 term:
-    term TIMES factor { $$ = create_op_node(NODE_OP, $1, $3); }
-    | term DIV factor { $$ = create_op_node(NODE_OP, $1, $3); }
+    term TIMES factor { $$ = create_op_node("*", $1, $3); }
+    | term DIV factor { $$ = create_op_node("/", $1, $3); }
     | factor          { $$ = $1; }
 ;
 

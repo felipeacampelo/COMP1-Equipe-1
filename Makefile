@@ -13,4 +13,4 @@ all:
 
 # Comando para limpar os arquivos gerados
 clean:
-	rm -f $(TARGET) parser/parser.tab.c parser/parser.tab.h lexer/lex.yy.c
+	rm -f $(TARGET) parser/parser.tab.c parser/parser.tab.h lexer/lex.yy.c output.java
