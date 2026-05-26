@@ -26,10 +26,15 @@ void yyerror(const char *s);
 %token IMPORT FROM AS
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
+%token INDENT
+%token DEDENT
+%token NEWLINE
 
 %left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
+
+%type <floatValue> expr term factor
 
 %type <node> expr term factor stmt program
 
