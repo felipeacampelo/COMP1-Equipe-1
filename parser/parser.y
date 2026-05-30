@@ -33,7 +33,7 @@ void yyerror(const char *s);
 %left PLUS MINUS
 %left TIMES DIV
 
-%type <floatValue> expr term factor
+//%type <floatValue> expr term factor
 
 %type <node> expr term factor stmt stmt_list program
 
