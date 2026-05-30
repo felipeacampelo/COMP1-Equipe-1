@@ -8,7 +8,7 @@ int indents[100];
 int top = 0;
 int pending_dents = 0;
 
-void push(int n){
+void push(int n) {
     top++;
     indents[top] = n;
 }
