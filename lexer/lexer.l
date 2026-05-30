@@ -17,190 +17,154 @@ void push(int n){
 
 %%
 
-"print"     { 
-   // printf("PRINT(%s)\n", yytext);
+"print" { 
     return PRINT; 
 }
 
-"if"        { 
-   // printf("IF(%s)\n", yytext);
+"if" { 
     return IF; 
 }
 
-"else"      { 
-   // printf("ELSE(%s)\n", yytext);
+"else" { 
     return ELSE; 
 }
 
-"while"     { 
-    //printf("WHILE(%s)\n", yytext);
+"while" { 
     return WHILE; 
 }
 
-"for"       {
-    //printf("FOR(%s)\n", yytext);
+"for" {
     return FOR;
 }
 
-"import"    {
-    //printf("IMPORT(%s)\n", yytext);
+"import" {
     return IMPORT;
 }
 
-"as"        {
-    //printf("AS(%s)\n", yytext);
+"as" {
     return AS;
 }
 
-"from"      {
-    //printf("FROM(%s)\n", yytext);
+"from" {
     return FROM;
 }
 
-"input"     {
-    //printf("INPUT(%s)\n", yytext);
+"input" {
     return INPUT;
 }
 
-"int"       {
-   // printf("INT(%s)\n", yytext);
+"int" {
     return INT;
 }
 
-"double"    {
-   // printf("DOUBLE(%s)\n", yytext);
+"double" {
     return DOUBLE;
 }
 
-"float"     {
-   // printf("FLOAT(%s)\n", yytext);
+"float" {
     return FLOAT;
 }
 
-"complex"   {
-   // printf("COMPLEX(%s)\n", yytext);
+"complex" {
     return COMPLEX;
 }
 
-"!"         {
-   // printf("NOT(%s)\n", yytext);
+"!" {
     return NOT;
 }
 
-">"         { 
-   // printf("MT(%s)\n", yytext);
+">" { 
     return MT;
 }
 
-"<"         { 
-   // printf("LT(%s)\n", yytext);
+"<" { 
     return LT; 
 }
 
-"#".*      { /* Ignorar comentário de linha */ }
+"#".* { /* Ignorar comentário de linha */ }
 
-"/*"([^*]|\*+[^*/])*\*+\/    { /* Ignorar comentários de bloco */ }
+"/*"([^*]|\*+[^*/])*\*+\/ { /* Ignorar comentários de bloco */ }
 
 [a-zA-Z_][a-zA-Z0-9_]* { 
     yylval.id = strdup(yytext); 
-   // printf("ID(%s)\n", yytext);
     return ID; 
 }
 
-[0-9]+\.[0-9]+      {
+[0-9]+\.[0-9]+ {
     yylval.floatValue = atof(yytext);
-   // printf("FLOAT_NUM(%s)\n", yytext);
     return FLOAT_NUM;
 }
 
-[0-9]+      { 
+[0-9]+ { 
     yylval.intValue = atoi(yytext); 
-   // printf("NUM(%s)\n", yytext);
     return NUM;
 }
 
-"++"        {
-   // printf("INCREMENT(%s)\n", yytext);
+"++" {
     return INCREMENT;
 }
 
-"+="        {
-   // printf("PLUS_ATRIBUTION(%s)\n", yytext);
+"+=" {
     return PLUS_ATRIBUTION;
 }
 
-"+"         { 
-   // printf("PLUS(%s)\n", yytext);
+"+" { 
     return PLUS; 
 }
 
-"-="        {
-   // printf("MINUS_ATRIBUTION(%s)\n", yytext);
+"-=" {
     return MINUS_ATRIBUTION;
 }
 
-"-"         { 
-   // printf("MINUS(%s)\n", yytext);
+"-" { 
     return MINUS; 
 }
 
-"*="        {
-   // printf("TIMES_ATRIBUTION(%s)\n", yytext);
+"*=" {
     return TIMES_ATRIBUTION;
 }
 
-"*"         { 
-   // printf("TIMES(%s)\n", yytext);
+"*" { 
     return TIMES; 
 }
 
-"//="       {
-   // printf("INT_DIV_ATRIBUTION(%s)\n", yytext);
+"//=" {
     return INT_DIV_ATRIBUTION;
 }
 
-"/="        {
-   // printf("DIV_ATRIBUTION(%s)\n", yytext);
+"/=" {
     return DIV_ATRIBUTION;
 }
 
-"//"        {
-   // printf("INT_DIV(%s)\n", yytext);
+"//" {
     return INT_DIV;
 }
 
-"/"         { 
-   // printf("DIV(%s)\n", yytext);
+"/" { 
     return DIV; 
 }
 
-"=="        { 
-   // printf("EQ(%s)\n", yytext);
+"==" { 
     return EQ; 
 }
 
-"!="        {
-   // printf("DIFF(%s)\n", yytext);
+"!=" {
     return DIFF;
 }
 
-"="         { 
-    // printf("ASSING(%s)\n", yytext);
+"=" { 
     return ASSIGN; 
 }
 
-"("         { 
-   // printf("LPAREN(%s)\n", yytext);
+"(" { 
     return LPAREN; 
 }
 
-")"         { 
-   // printf("RPAREN(%s)\n", yytext);
+")" { 
     return RPAREN; 
 }
 
-":"         {
-   // printf("COLON(%s)\n", yytext);
+":" {
     return COLON;
 }
 
@@ -248,8 +212,8 @@ void push(int n){
     return EOF;
 }
 
-[ \t]+      { /* Ignora espacos no meio da linha */ }
-.           { printf("UNKNOWN(%s)\n", yytext); }
+[ \t]+ { /* Ignora espacos no meio da linha */ }
+. { printf("UNKNOWN(%s)\n", yytext); }
 
 %%
 
