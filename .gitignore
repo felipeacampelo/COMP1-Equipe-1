@@ -1,1 +1,47 @@
+# Executáveis
 compiladorpj
+*.out
+*.exe
+
+# Objetos e bibliotecas
+*.o
+*.a
+*.so
+
+# Arquivos gerados pelo Flex
+lex.yy.c
+
+# Arquivos gerados pelo Bison
+parser.tab.c
+parser.tab.h
+*.output
+
+# Arquivos temporários do editor
+*~
+.*.swp
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Cobertura de testes
+coverage/
+.coverage
+
+# Arquivos temporários diversos
+tmp/
+temp/
+
+# Diretórios de build
+build/
+dist/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
