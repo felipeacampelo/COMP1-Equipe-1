@@ -5,7 +5,7 @@ all:
 
 	flex -o lexer/lex.yy.c lexer/lexer.l
 
-	gcc parser/parser.tab.c lexer/lex.yy.c -o $(TARGET) -lfl
+	gcc parser/parser.tab.c lexer/lex.yy.c parser/ast.c -o $(TARGET) -lfl
 
 clean:
 	rm -f $(TARGET) parser/parser.tab.c parser/parser.tab.h lexer/lex.yy.c
