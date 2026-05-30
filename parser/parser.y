@@ -21,7 +21,7 @@ void yyerror(const char *s);
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
-%token IF ELSE WHILE FOR COLON
+%token IN IF ELSE WHILE FOR COLON
 %token MT LT EQ DIFF NOT
 %token IMPORT FROM AS
 %token INPUT 
@@ -57,7 +57,7 @@ stmt_list:
         $$ = NULL; 
     }
 ;
-;
+
 
 stmt:
     ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
@@ -66,6 +66,7 @@ stmt:
     // | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
     | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
     | expr { $$ = $1; }
+    | FOR ID IN expr COLON INDENT stmt_list DEDENT {$$ = create_for_node(create_id_node($2), $4, $7); }
     // | WHILE LPAREN expr RPAREN COLON { }
     // | WHILE LPAREN term RPAREN COLON { }
     // | IF LPAREN expr RPAREN COLON { }

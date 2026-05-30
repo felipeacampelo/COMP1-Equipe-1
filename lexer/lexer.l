@@ -18,8 +18,13 @@ void push(int n){
 %%
 
 "print"     { 
-   // printf("PRINT(%s)\n", yytext);
+//    printf("PRINT(%s)\n", yytext);
     return PRINT; 
+}
+
+"in"     { 
+//    printf("IN(%s)\n", yytext);
+    return IN; 
 }
 
 "if"        { 
@@ -28,22 +33,22 @@ void push(int n){
 }
 
 "else"      { 
-   // printf("ELSE(%s)\n", yytext);
+//  printf("ELSE(%s)\n", yytext);
     return ELSE; 
 }
 
 "while"     { 
-    //printf("WHILE(%s)\n", yytext);
+    // printf("WHILE(%s)\n", yytext);
     return WHILE; 
 }
 
 "for"       {
-    //printf("FOR(%s)\n", yytext);
+    // printf("FOR(%s)\n", yytext);
     return FOR;
 }
 
 "import"    {
-    //printf("IMPORT(%s)\n", yytext);
+    // printf("IMPORT(%s)\n", yytext);
     return IMPORT;
 }
 
@@ -88,12 +93,12 @@ void push(int n){
 }
 
 ">"         { 
-   // printf("MT(%s)\n", yytext);
+    // printf("MT(%s)\n", yytext);
     return MT;
 }
 
 "<"         { 
-   // printf("LT(%s)\n", yytext);
+    // printf("LT(%s)\n", yytext);
     return LT; 
 }
 
@@ -109,28 +114,28 @@ void push(int n){
 
 [0-9]+\.[0-9]+      {
     yylval.floatValue = atof(yytext);
-   // printf("FLOAT_NUM(%s)\n", yytext);
+    // printf("FLOAT_NUM(%s)\n", yytext);
     return FLOAT_NUM;
 }
 
 [0-9]+      { 
     yylval.intValue = atoi(yytext); 
-   // printf("NUM(%s)\n", yytext);
+    // printf("NUM(%s)\n", yytext);
     return NUM;
 }
 
 "++"        {
-   // printf("INCREMENT(%s)\n", yytext);
+    // printf("INCREMENT(%s)\n", yytext);
     return INCREMENT;
 }
 
 "+="        {
-   // printf("PLUS_ATRIBUTION(%s)\n", yytext);
+    // printf("PLUS_ATRIBUTION(%s)\n", yytext);
     return PLUS_ATRIBUTION;
 }
 
 "+"         { 
-   // printf("PLUS(%s)\n", yytext);
+    // printf("PLUS(%s)\n", yytext);
     return PLUS; 
 }
 
@@ -249,6 +254,8 @@ void push(int n){
 }
 
 [ \t]+      { /* Ignora espacos no meio da linha */ }
+" "             { /* ignora espaços normais */ }
+#[^\n]* { /* ignora os comentarios do Python */ }
 .           { printf("UNKNOWN(%s)\n", yytext); }
 
 %%

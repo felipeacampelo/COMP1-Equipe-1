@@ -3,14 +3,16 @@
 
 // Tipos de nós que o seu compilador Python reconhece
 typedef enum {
-    NODE_INT,      // Números
-    NODE_ID,       // Variáveis
-    NODE_OP,       // Operações (+, -, *, /)
-    NODE_PRINT,    // Comando print
-    NODE_ASSIGN,   // Atribuição (=)
+    NODE_INT,       // Números
+    NODE_ID,        // Variáveis
+    NODE_OP,        // Operações (+, -, *, /)
+    NODE_PRINT,     // Comando print
+    NODE_ASSIGN,    // Atribuição (=)
     NODE_IF,        // Comando If
     NODE_WHILE,     // Comando while
-    NODE_BLOCK
+    NODE_FOR,       // Comando for
+    NODE_RANGE,     // Comando for e range
+    NODE_BLOCK      // Comando para blocos de código (if, while, for)
 } NodeType;
 
 typedef struct ast_node {
@@ -30,6 +32,9 @@ ASTNode* create_print_node(ASTNode *expr);
 ASTNode* create_if_node(ASTNode *codition, ASTNode *body);
 ASTNode* create_while_node(ASTNode *codition, ASTNode *body);
 ASTNode* create_block_node(ASTNode *v1, ASTNode *v2);
+ASTNode* create_range_node(ASTNode *start, ASTNode *end);
+ASTNode* create_for_node(ASTNode *iter_var, ASTNode *body, ASTNode *iterable);
+
 void print_tree(ASTNode *node, int level);
 
 #endif
