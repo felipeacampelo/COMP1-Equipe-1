@@ -36,7 +36,6 @@ void yyerror(const char *s);
 %type <floatValue> expr term factor
 
 %type <node> expr term factor stmt stmt_list program
->>>>>>> docs
 
 %%
 
