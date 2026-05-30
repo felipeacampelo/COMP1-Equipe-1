@@ -7,7 +7,7 @@ int yylex();
 void yyerror(const char *s);
 %}
 
-%union{
+%union {
     int intValue;
     double floatValue;
     char *id;
@@ -49,11 +49,11 @@ program:
 ;
 
 stmt_list:
-      stmt               { $$ = $1; }
-    | stmt_list stmt     { $$ = create_block_node($1, $2); }
-    | stmt_list NEWLINE  { $$ = $1; } /* Aceita quebras de linha normais */
-    | NEWLINE            { $$ = NULL; }
-    | error NEWLINE      { 
+    stmt { $$ = $1; }
+    | stmt_list stmt { $$ = create_block_node($1, $2); }
+    | stmt_list NEWLINE { $$ = $1; } /* Aceita quebras de linha normais */
+    | NEWLINE { $$ = NULL; }
+    | error NEWLINE { 
         yyerrok; 
         yyclearin; 
         printf("[ERRO] Sintaxe invalida nesta linha. Pulando para a proxima...\n"); 
@@ -80,27 +80,27 @@ stmt:
 ;
 
 expr:
-      term
-    | expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
+    term
+    | expr PLUS term { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
-    | expr MT term    { $$ = create_op_node(NODE_OP, $1, $3); }
+    | expr MT term { $$ = create_op_node(NODE_OP, $1, $3); }
 ;
 
 term:
     term TIMES factor { $$ = create_op_node(NODE_OP, $1, $3); }
     | term DIV factor { $$ = create_op_node(NODE_OP, $1, $3); }
-    | factor          { $$ = $1; }
+    | factor { $$ = $1; }
 ;
 
 factor:
-    NUM         { $$ = create_int_node($1); }
+    NUM { $$ = create_int_node($1); }
     | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
-    | ID        { $$ = create_id_node($1); }
+    | ID { $$ = create_id_node($1); }
     | LPAREN expr RPAREN { $$ = $2; }
 ;
 
 %%
 
-void yyerror(const char *s){
+void yyerror(const char *s) {
     printf("Erro sintatico\n");
 }
