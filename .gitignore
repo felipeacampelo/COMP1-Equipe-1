@@ -1,1 +1,7 @@
 compiladorpj
+parser/parser.tab.c
+parser/parser.tab.h
+lexer/lex.yy.c
+.vscode/
+*.o
+*~
