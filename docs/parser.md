@@ -6,6 +6,7 @@ title: Documentação do Parser
 # Analisador Sintático (Parser)
 
 O parser é implementado usando **Bison** (GNU Parser Generator). Ele valida a sintaxe dos fluxos de tokens de acordo com as regras gramaticais.
+Além da validação sintática, ele constrói uma AST para representar a estrutura do programa.
 
 ## Localização do Arquivo
 
@@ -30,7 +31,9 @@ void yyerror(const char *s);
 ```c
 %union{
     int intValue;
+    double floatValue;
     char *id;
+    struct ast_node *node;
 }
 ```
 
@@ -39,8 +42,9 @@ Define os tipos para valores semânticos passados entre lexer e parser.
 ### Declarações de Tokens
 ```c
 %token <intValue> NUM
+%token <floatValue> FLOAT_NUM
 %token <id> ID
-%token PLUS MINUS TIMES DIV DIV_ATRIBUTION TIMES_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
+%token PLUS PLUS_ATRIBUTION MINUS MINUS_ATRIBUTION TIMES TIMES_ATRIBUTION DIV DIV_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
@@ -49,6 +53,7 @@ Define os tipos para valores semânticos passados entre lexer e parser.
 %token IMPORT FROM AS
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
+%token INDENT DEDENT NEWLINE
 ```
 
 ### Precedência de Operadores
@@ -62,36 +67,40 @@ Operadores de menor precedência são listados primeiro. Isso resolve ambiguidad
 
 ### Declarações de Tipo
 ```c
-%type <intValue> expr term factor
+%type <node> expr term factor stmt stmt_list program
 ```
 
-Especifica que esses não-terminais retornam valores inteiros.
+Especifica que esses não-terminais retornam nós da AST.
 
 ## Regras Gramaticais
 
 ### Programa
 ```yacc
 program:
-    program stmt '\n'
-    | stmt '\n'
+    stmt_list
 ;
 ```
 
-Um programa é uma sequência de comandos separados por novas linhas.
+Um programa é tratado como uma lista de comandos e blocos.
+
+### Lista de comandos
+```yacc
+stmt_list:
+      stmt
+    | stmt_list stmt
+    | stmt_list NEWLINE
+    | NEWLINE
+;
+```
 
 ### Comandos
 ```yacc
 stmt:
-    ID ASSIGN term { }
-    | PRINT LPAREN expr RPAREN { }
-    | IF LPAREN expr RPAREN COLON stmt { }
-    | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
-    | WHILE LPAREN expr RPAREN COLON stmt { }
-    | expr { }
-    | WHILE LPAREN expr RPAREN COLON { }
-    | WHILE LPAREN term RPAREN COLON { }
-    | IF LPAREN expr RPAREN COLON { }
-    | IF LPAREN term RPAREN COLON { }
+    ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
+    | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
+    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_if_node($3, $7); }
+    | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
+    | expr { $$ = $1; }
     | IMPORT ID { }
     | FROM ID IMPORT ID { }
     | FROM ID IMPORT ID AS ID { }
@@ -104,24 +113,20 @@ Esse conjunto cobre a forma atual do projeto: programas compostos por uma sequê
 ### Expressões
 ```yacc
 expr:
-    expr PLUS term { $$ = $1 + $3; }
-    | expr MINUS term { $$ = $1 - $3; }
-    | term { $$ = $1; }
-    | expr MT expr { $$ = $1 > $3; }
-    | expr LT expr { $$ = $1 < $3; }
-    | expr EQ expr { $$ = $1 == $3; }
-    | expr PLUS expr { $$ = $1 + $3; }
-    | expr MINUS expr { $$ = $1 - $3; }
+    term
+    | expr PLUS term { $$ = create_op_node(NODE_OP, $1, $3); }
+    | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
+    | expr MT term { $$ = create_op_node(NODE_OP, $1, $3); }
 ;
 ```
 
-Ações semânticas existem para expressões e termos, mas a propagação de valores ainda é parcial porque `factor` ainda não atribui `$$` para todos os casos.
+Ações semânticas já constroem nós da AST durante o parsing.
 
 ### Termos
 ```yacc
 term:
-    term TIMES factor { $$ = $1 * $3; }
-    | term DIV factor { $$ = $1 / $3; }
+    term TIMES factor { $$ = create_op_node(NODE_OP, $1, $3); }
+    | term DIV factor { $$ = create_op_node(NODE_OP, $1, $3); }
     | factor { $$ = $1; }
 ;
 ```
@@ -129,11 +134,27 @@ term:
 ### Fatores
 ```yacc
 factor:
-    NUM { }
-    | ID { }
-    | LPAREN expr RPAREN { }
+    NUM { $$ = create_int_node($1); }
+    | FLOAT_NUM { $$ = create_int_node((int)$1); }
+    | ID { $$ = create_id_node($1); }
+    | LPAREN expr RPAREN { $$ = $2; }
 ;
 ```
+
+## AST
+
+O parser trabalha junto com `parser/ast.h` e `parser/ast.c` para montar a árvore sintática abstrata.
+
+Os principais tipos de nó usados hoje são:
+
+- número
+- identificador
+- operação
+- atribuição
+- `print`
+- `if`
+- `while`
+- bloco
 
 ## Tratamento de Erros
 

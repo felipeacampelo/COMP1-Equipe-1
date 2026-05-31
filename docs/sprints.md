@@ -59,3 +59,45 @@ Criar a primeira versão do parser e integrá-lo ao lexer.
 
 ### Resultado esperado
 Reconhecer um subconjunto pequeno da linguagem sem depender de geração de código.
+
+## Sprint 4 - Consolidação sintática
+
+### Objetivo
+Ampliar a gramática para blocos indentados e melhorar a integração entre lexer e parser.
+
+### Entregas
+- suporte a `INDENT`, `DEDENT` e `NEWLINE`;
+- blocos com múltiplos comandos;
+- refinamento de expressões e de controle de fluxo;
+- revisão da documentação técnica.
+
+### Resultado esperado
+Uma base sintática mais próxima da estrutura de um subconjunto real de Python.
+
+## Sprint 5 - Estruturação da AST e tabela de símbolos
+
+### Objetivo
+Adicionar uma representação intermediária para que o compilador deixe de apenas validar a entrada e preparar a base da análise semântica.
+
+### Entregas
+- definição dos tipos de nós da AST;
+- funções de criação de nós;
+- integração do parser com a árvore;
+- visualização da árvore no terminal;
+- estrutura da tabela de símbolos.
+
+### Resultado esperado
+Representar programas aceitos pelo parser em uma estrutura navegável e preparar o compilador para validações semânticas posteriores.
+
+## Sprint 6 - Próximos passos
+
+### Objetivo
+Preparar a evolução do compilador para além da sintaxe.
+
+### Entregas previstas
+- análise semântica;
+- verificação de tipos;
+- tradução mais completa para Java.
+
+### Resultado esperado
+Uma arquitetura capaz de evoluir de parser com AST para compilador com validação semântica e saída mais robusta.

@@ -4,14 +4,14 @@ title: Início
 ---
 ## Visão Geral
 
-O objetivo do projeto é construir um compilador para um subconjunto de Python, começando pela leitura de tokens e validação sintática e evoluindo depois para análise semântica, representação intermediária e geração de código em Java.
+O objetivo do projeto é construir um compilador para um subconjunto de Python, cobrindo análise léxica, análise sintática, construção de árvore sintática abstrata e tradução inicial para Java.
 
-O foco atual está na base do compilador:
+O foco atual do projeto está em:
 
 - reconhecer a entrada com Flex;
 - validar a estrutura sintática com Bison;
-- manter a documentação coerente com o estado real do protótipo;
-- preparar a transição para as próximas fases do semestre.
+- construir uma AST a partir do código de entrada;
+- preparar a evolução para análise semântica e tradução mais completa.
 
 ## Integrantes do Grupo
 
@@ -29,25 +29,37 @@ O foco atual está na base do compilador:
 
 - atribuição com `=`
 - `print(...)`
-- `if (...) : stmt`
-- `while (...) : stmt`
+- `if (...) : bloco`
+- `while (...) : bloco`
+- `for ... in ... : bloco`
 - `import id`
 - `import id as id`
 - `from id import id`
 - `from id import id as id`
 - expressões com `+`, `-`, `*`, `/`
-- comparações com `==`, `!=`, `>` e `<`
+- comparações com `==`, `>`, `<`
+- blocos por indentação
+- números inteiros e decimais
 
 ### O lexer já reconhece, mas o parser ainda não usa em regras completas
 
-- `for`
 - `input`
 - `int`, `double`, `float`, `complex`
 - `++`
-- `*=`, `/=`, `//=`
+- `+=`, `-=`, `*=`, `/=`, `//=`
 - `//`
+- `!=`
+- `!`
 
 Esses tokens existem no scanner, mas ainda não fazem parte de uma gramática final.
+
+### O que ainda não existe
+
+- tabela de símbolos
+- análise semântica
+- verificação de tipos
+- suporte completo a strings
+- tradução Java completa para todos os nós da árvore
 
 ## Estrutura do Projeto
 
@@ -56,7 +68,9 @@ COMP1-Equipe-1/
 ├── lexer/          # Analisador léxico (Flex)
 │   └── lexer.l     # Definições de tokens
 ├── parser/         # Analisador sintático (Bison)
-│   └── parser.y    # Regras gramaticais
+│   ├── parser.y    # Regras gramaticais
+│   ├── ast.h       # Estruturas da AST
+│   └── ast.c       # Construção e visualização da AST
 ├── src/            # Programas Python de exemplo
 │   ├── collatz.py
 │   ├── ellipticCurveExemple.py
@@ -78,15 +92,16 @@ COMP1-Equipe-1/
 ## Regras de uso atuais
 
 - Cada comando precisa terminar com quebra de linha.
-- Não há blocos indentados no estilo Python.
-- `if` e `while` aceitam apenas um `stmt` como corpo.
-- O projeto ainda está na etapa de base sintática, antes da geração de código Java.
+- Blocos são delimitados por indentação lógica.
+- `if`, `while` e `for` aceitam blocos com múltiplos comandos.
+- O projeto já constrói AST como etapa intermediária do compilador.
 
 ## Exemplo compatível com a gramática atual
 
 ```python
 x = 10 + 2
-print(x)
+if (x > 5):
+    print(x)
 ```
 
 ## Arquitetura
@@ -99,24 +114,38 @@ O lexer (`lexer.l`) tokeniza o código fonte em tokens:
 - Comentários (linha única `#` e bloco `/* */`)
 
 ### 2. Parsing
-O parser (`parser.y`) valida a sintaxe de programas separados por linha:
+O parser (`parser.y`) valida a sintaxe e constrói a árvore sintática:
 - Avaliação de expressões com precedência de operadores
-- Parsing de comandos (atribuições, condicionais, loops)
+- Parsing de comandos (atribuições, condicionais e loops)
+- Organização de blocos por indentação
 - Tratamento de importações
 
-### 3. Evolução Planejada
-Depois da base léxica e sintática, o projeto deve evoluir para:
+### 3. AST
+A AST representa a estrutura do programa e organiza:
+
+- números;
+- identificadores;
+- operações;
+- atribuições;
+- `print`;
+- `if`;
+- `while`;
+- blocos.
+
+### 4. Evolução Planejada
+Depois da base léxica, sintática e estrutural, o projeto deve evoluir para:
 
 - análise semântica;
-- AST mais estruturada;
+- tabela de símbolos;
+- verificação de tipos;
 - geração de código intermediário;
 - tradução final para Java.
 
-### 4. Processo de Build
+### 5. Processo de Build
 ```
 1. bison -d parser/parser.y -o parser/parser.tab.c
 2. flex -o lexer/lex.yy.c lexer/lexer.l
-3. gcc parser/parser.tab.c lexer/lex.yy.c -o compilador -lfl
+3. gcc parser/parser.tab.c lexer/lex.yy.c -o compiladorpj -lfl
 ```
 
 ## Início Rápido
@@ -126,7 +155,7 @@ Depois da base léxica e sintática, o projeto deve evoluir para:
 make all
 
 # Executar o compilador
-./compilador < input.py
+./compiladorpj src/collatz.py
 
 # Limpar arquivos gerados
 make clean

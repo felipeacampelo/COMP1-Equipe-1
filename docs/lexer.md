@@ -34,6 +34,8 @@ lexer/lexer.l
 
 Essas palavras são reconhecidas diretamente pelo scanner. Algumas delas ainda não têm regra sintática no parser.
 
+O lexer também produz os tokens necessários para blocos por indentação e para o laço `for`.
+
 ### Operadores de Comparação
 ```flex
 "=="        { printf("EQ(%s)\n", yytext); return EQ; }
@@ -77,6 +79,8 @@ Corresponde a nomes de variáveis e funções começando com letra ou underscore
 
 Corresponde a números inteiros e de ponto flutuante. No estado atual, o valor semântico é convertido com `atoi`, então o parser ainda trata o dado como inteiro.
 
+Além de `NUM`, o lexer também distingue `FLOAT_NUM` para valores decimais.
+
 ### Operadores Aritméticos
 ```flex
 "="         { printf("ASSING(%s)\n", yytext); return ASSIGN; }
@@ -101,10 +105,14 @@ Observação: a mensagem de debug de `=` imprime `ASSING(...)` no código atual,
 "\n"        { printf("NLINE\n"); return '\n'; }
 ```
 
+Na integração com blocos indentados, quebras de linha com recuo podem gerar `INDENT`, `DEDENT` e `NEWLINE`.
+
 ### Espaços em Branco
 ```flex
 [ \t]+      { /* Ignorar espaços e tabs */ }
 ```
+
+Espaços em branco no começo de linhas também participam do controle de indentação lógica.
 
 ## Modo de Debug
 
@@ -126,12 +134,14 @@ O lexer inclui as definições de tokens do parser:
 #include "../parser/parser.tab.h"
 ```
 
-A função main simplesmente chama o parser:
+A forma mais simples de integração consiste em chamar o parser diretamente:
 ```c
 int main(void) {
     return yyparse();
 }
 ```
+
+Também é possível iniciar o parser recebendo o arquivo `.py` por argumento de linha de comando.
 
 ## Compilando o Lexer
 

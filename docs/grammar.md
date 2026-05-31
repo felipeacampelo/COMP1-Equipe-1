@@ -10,23 +10,19 @@ Esta página documenta a gramática que o parser atual aceita.
 ## Estrutura do Programa
 
 ```
-program := program stmt '\n'
-         | stmt '\n'
-```
+program := stmt_list
 
-## Comandos
+stmt_list := stmt
+          | stmt_list stmt
+          | stmt_list NEWLINE
+          | NEWLINE
 
-```
-stmt := ID ASSIGN term
+stmt := ID ASSIGN expr
       | PRINT LPAREN expr RPAREN
-      | IF LPAREN expr RPAREN COLON stmt
-      | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON
-      | WHILE LPAREN expr RPAREN COLON stmt
+      | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT
+      | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT
+      | FOR ID IN expr COLON INDENT stmt_list DEDENT
       | expr
-      | WHILE LPAREN expr RPAREN COLON
-      | WHILE LPAREN term RPAREN COLON
-      | IF LPAREN expr RPAREN COLON
-      | IF LPAREN term RPAREN COLON
       | IMPORT ID
       | FROM ID IMPORT ID
       | FROM ID IMPORT ID AS ID
@@ -39,11 +35,9 @@ stmt := ID ASSIGN term
 expr := expr PLUS term
       | expr MINUS term
       | term
-      | expr MT expr        (greater than)
-      | expr LT expr        (less than)
+      | expr MT term        (greater than)
+      | expr LT term        (less than)
       | expr EQ expr        (equal)
-      | expr PLUS expr
-      | expr MINUS expr
 ```
 
 ## Termos e Fatores
@@ -54,6 +48,7 @@ term := term TIMES factor
       | factor
 
 factor := NUM
+        | FLOAT_NUM
         | ID
         | LPAREN expr RPAREN
 ```
@@ -70,9 +65,11 @@ Os operadores são avaliados na seguinte precedência (maior para menor):
 ## Observações importantes
 
 - O parser trabalha com comandos separados por nova linha.
-- `if` e `while` aceitam apenas um único `stmt` como corpo.
-- A ordem do `else` segue o arquivo atual `parser.y`.
-- `FOR`, `INPUT`, `INT`, `DOUBLE`, `FLOAT`, `COMPLEX`, `INT_DIV`, `INT_DIV_ATRIBUTION`, `TIMES_ATRIBUTION`, `DIV_ATRIBUTION` e `INCREMENT` existem como tokens no lexer, mas ainda não aparecem em regras sintáticas completas.
+- `if`, `while` e `for` usam `INDENT` e `DEDENT` para delimitar blocos.
+- O parser aceita números inteiros e decimais.
+- `INPUT`, `INT`, `DOUBLE`, `FLOAT`, `COMPLEX`, `INT_DIV`, `INT_DIV_ATRIBUTION`, `TIMES_ATRIBUTION`, `DIV_ATRIBUTION`, `INCREMENT`, `DIFF` e `NOT` existem como tokens no lexer, mas ainda não aparecem em regras sintáticas completas.
+- Ainda não existe tabela de símbolos.
+- Ainda não existe fase semântica.
 
 ## Referência de Tokens
 
@@ -92,6 +89,7 @@ Os operadores são avaliados na seguinte precedência (maior para menor):
 | `DOUBLE` | Tipo double |
 | `FLOAT` | Tipo float |
 | `COMPLEX` | Tipo complex |
+| `IN` | Palavra-chave do laço `for` |
 
 ### Operadores
 | Token | Símbolo | Descrição |
@@ -118,6 +116,9 @@ Os operadores são avaliados na seguinte precedência (maior para menor):
 | `LPAREN` | `(` | Parêntese esquerdo |
 | `RPAREN` | `)` | Parêntese direito |
 | `COLON` | `:` | Separador de comandos |
+| `INDENT` | recuo | Início de bloco |
+| `DEDENT` | redução de recuo | Fim de bloco |
+| `NEWLINE` | nova linha lógica | Separação de comandos |
 
 ## Comentários
 
