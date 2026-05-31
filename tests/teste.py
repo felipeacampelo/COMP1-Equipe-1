@@ -1,13 +1,20 @@
+<<<<<<< HEAD:src/teste.py
 # 1. Atribuicoes, Variaveis e Operacoes (+, -, *, >, /)
 a = 10
 b = 5
 c = a + b
 d = c * 2
 e = d > a
+=======
+x = 10
+
+print(x)
+>>>>>>> main:tests/teste.py
 
 # 2. Comando Print
 print(e)
 
+<<<<<<< HEAD:src/teste.py
 # 3. IF com blocos indentados
 if (a > b):
     print(a)
@@ -27,3 +34,8 @@ for i in c:
 # 7. Regras de Importacao (Ignoradas graciosamente pela AST)
 import math
 import pandas as pd
+=======
+while (x > 8):
+    x = x - 1
+    print(x)
+>>>>>>> main:tests/teste.py
