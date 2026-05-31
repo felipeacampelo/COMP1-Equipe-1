@@ -34,13 +34,13 @@ ASTNode* create_if_else_node(ASTNode *condition, ASTNode *if_body, ASTNode *else
     return node;
 }
 
-void print_tree(ASTNode *node, int level) {
+/*void print_tree(ASTNode *node, int level) {
     if (!node) 
         return;
     
     for (int i = 0; i < level; i++) 
         printf("  ");
-}
+}*/
 
 ASTNode *create_int_node(int val){
     ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));

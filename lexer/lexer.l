@@ -69,6 +69,10 @@ void push(int n) {
     return COMPLEX;
 }
 
+"%" {
+    return MOD;
+}
+
 "!" {
     return NOT;
 }
