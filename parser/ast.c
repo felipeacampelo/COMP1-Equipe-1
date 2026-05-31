@@ -75,7 +75,7 @@ ASTNode *create_block_node(ASTNode *v1, ASTNode *v2){
 
 void print_tree(ASTNode *node, int level){
     if (!node)
-        return 1;
+        return;
 
     for(int i = 0; i < level; i++)
         printf("  ");
