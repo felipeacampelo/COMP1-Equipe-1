@@ -21,6 +21,7 @@ parser.tab.h
 .*.swp
 *.swp
 *.swo
+.vscode/
 
 # Python
 __pycache__/

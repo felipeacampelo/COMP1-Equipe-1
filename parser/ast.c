@@ -3,6 +3,45 @@
 #include <string.h>
 #include "ast.h"
 
+ASTNode* create_for_node(ASTNode *iter_var, ASTNode *body, ASTNode *iterable) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    
+    node->type = NODE_FOR;
+    node->left = create_block_node(iter_var, iterable);
+    node->right = body;
+
+    return node;
+}
+
+ASTNode* create_range_node(ASTNode *start, ASTNode *end) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    
+    node->type = NODE_RANGE;
+    node->left = start; 
+    node->right = end; 
+    
+    return node;
+}
+
+ASTNode* create_if_else_node(ASTNode *condition, ASTNode *if_body, ASTNode *else_body) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+    
+    node->type = NODE_IF_ELSE;
+    node->left = condition;
+    node->right = if_body;
+    node->else_body = else_body;
+    
+    return node;
+}
+
+void print_tree(ASTNode *node, int level) {
+    if (!node) 
+        return;
+    
+    for (int i = 0; i < level; i++) 
+        printf("  ");
+}
+
 ASTNode *create_int_node(int val){
     ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
 
@@ -111,6 +150,15 @@ void print_tree(ASTNode *node, int level){
             print_tree(node->left, level + 1); // Condição
             print_tree(node->right, level + 1); // Corpo
             break;
+        
+        case NODE_IF_ELSE:
+            printf("IF\n");
+            print_tree(node->left, level + 1);  // Condição
+            print_tree(node->right, level + 1); // Corpo do IF
+            for (int i = 0; i < level; i++) printf("  "); // Mantém o alinhamento
+            printf("ELSE\n");
+            print_tree(node->else_body, level + 1); // Corpo do ELSE
+            break;    
 
         case NODE_WHILE:
             printf("WHILE\n");
@@ -121,7 +169,19 @@ void print_tree(ASTNode *node, int level){
         case NODE_BLOCK:
             if (node->left) print_tree(node->left, level);
             if (node->right) print_tree(node->right, level);
-            break;        
+            break;
+
+        case NODE_FOR:
+            printf("FOR\n");
+            print_tree(node->left, level + 1);
+            print_tree(node->right, level + 1);
+            break;
+        
+        case NODE_RANGE:
+            printf("RANGE\n");
+            print_tree(node->left, level + 1);
+            print_tree(node->right, level + 1);
+            break;    
 
         default: 
             printf("UNKNOW NODE\n");

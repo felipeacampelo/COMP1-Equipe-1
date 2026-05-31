@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
+#include "symtable.h"
 
 int yylex();
 void yyerror(const char *s);
@@ -21,7 +22,8 @@ void yyerror(const char *s);
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
-%token IF ELSE WHILE FOR COLON
+%token MOD
+%token IN IF ELSE WHILE FOR COLON
 %token MT LT EQ DIFF NOT
 %token IMPORT FROM AS
 %token INPUT 
@@ -60,23 +62,23 @@ stmt_list:
         $$ = NULL; 
     }
 ;
-;
+
 
 stmt:
-    ID ASSIGN expr { $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
+    ID ASSIGN expr { insert_symbol($1); $$ = create_op_node(NODE_ASSIGN, create_id_node($1), $3); }
     | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
     | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_if_node($3, $7); }
-    // | IF LPAREN expr RPAREN COLON stmt ELSE stmt COLON { }
+    | IF LPAREN expr RPAREN COLON stmt ELSE COLON stmt { $$ = create_if_else_node($3, $6, $9); }
+    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT ELSE COLON INDENT stmt_list DEDENT { $$ = create_if_else_node($3, $7, $12); }
     | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
     | expr { $$ = $1; }
-    // | WHILE LPAREN expr RPAREN COLON { }
-    // | WHILE LPAREN term RPAREN COLON { }
-    // | IF LPAREN expr RPAREN COLON { }
-    // | IF LPAREN term RPAREN COLON { }
-    | IMPORT ID { }
-    | FROM ID IMPORT ID { }
-    | FROM ID IMPORT ID AS ID { }
-    | IMPORT ID AS ID { }
+    | FOR ID { insert_symbol($2); } IN expr COLON INDENT stmt_list DEDENT { $$ = create_for_node(create_id_node($2), $8, $5); }
+    | WHILE LPAREN expr RPAREN COLON stmt { $$ = create_while_node($3, $6); }
+    | IF LPAREN expr RPAREN COLON stmt { $$ = create_if_node($3, $6); }
+    | IMPORT ID { $$ = NULL; }
+    | FROM ID IMPORT ID { $$ = NULL; }
+    | FROM ID IMPORT ID AS ID { $$ = NULL; }
+    | IMPORT ID AS ID { $$ = NULL; }
 ;
 
 expr:
@@ -84,18 +86,25 @@ expr:
     | expr PLUS term { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MT term { $$ = create_op_node(NODE_OP, $1, $3); }
+    | expr EQ term { $$ = create_op_node(NODE_OP, $1, $3); }
 ;
 
 term:
     term TIMES factor { $$ = create_op_node(NODE_OP, $1, $3); }
     | term DIV factor { $$ = create_op_node(NODE_OP, $1, $3); }
+    | term MOD factor { $$ = create_op_node(NODE_OP, $1, $3); }
     | factor { $$ = $1; }
 ;
 
 factor:
     NUM { $$ = create_int_node($1); }
     | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
-    | ID { $$ = create_id_node($1); }
+    | ID { 
+        if(lookup_symbol($1) == NULL) {
+            printf("Erro sintatico: A variavel '%s' nao foi declarada!\n", $1);
+        }
+
+        $$ = create_id_node($1); }
     | LPAREN expr RPAREN { $$ = $2; }
 ;
 

@@ -2,14 +2,17 @@
 #define AST_H
 
 typedef enum {
-    NODE_INT,      
-    NODE_ID,       
-    NODE_OP,       
-    NODE_PRINT,    
-    NODE_ASSIGN,   
-    NODE_IF,       
-    NODE_WHILE,    
-    NODE_BLOCK
+    NODE_INT,       
+    NODE_ID,        
+    NODE_OP,        
+    NODE_PRINT,     
+    NODE_ASSIGN,    
+    NODE_IF,        
+    NODE_IF_ELSE,   
+    NODE_WHILE,     
+    NODE_FOR,       
+    NODE_RANGE,     
+    NODE_BLOCK     
 } NodeType;
 
 typedef struct ast_node {
@@ -19,6 +22,7 @@ typedef struct ast_node {
     char *id_val;           
     struct ast_node *left;  
     struct ast_node *right; 
+    struct ast_node *else_body;
 } ASTNode;
 
 ASTNode* create_int_node(int val);
@@ -26,8 +30,12 @@ ASTNode* create_id_node(char *id);
 ASTNode* create_op_node(NodeType type, ASTNode *left, ASTNode *right);
 ASTNode* create_print_node(ASTNode *expr);
 ASTNode* create_if_node(ASTNode *codition, ASTNode *body);
+ASTNode* create_if_else_node(ASTNode *condition, ASTNode *if_body, ASTNode *else_body);
 ASTNode* create_while_node(ASTNode *codition, ASTNode *body);
 ASTNode* create_block_node(ASTNode *v1, ASTNode *v2);
+ASTNode* create_range_node(ASTNode *start, ASTNode *end);
+ASTNode* create_for_node(ASTNode *iter_var, ASTNode *body, ASTNode *iterable);
+
 void print_tree(ASTNode *node, int level);
 
 #endif
