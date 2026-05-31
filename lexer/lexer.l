@@ -4,6 +4,7 @@
 #include <string.h>
 #include "../parser/parser.tab.h" 
 
+
 int indents[100];
 int top = 0;
 int pending_dents = 0;
@@ -157,6 +158,11 @@ void push(int n){
 "*"         { 
    // printf("TIMES(%s)\n", yytext);
     return TIMES; 
+}
+
+"%"         { 
+   // printf("MOD(%s)\n", yytext);
+    return MOD;
 }
 
 "//="       {

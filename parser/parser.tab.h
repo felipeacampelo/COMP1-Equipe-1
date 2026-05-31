@@ -72,28 +72,29 @@ extern int yydebug;
     LPAREN = 273,                  /* LPAREN  */
     RPAREN = 274,                  /* RPAREN  */
     PRINT = 275,                   /* PRINT  */
-    IN = 276,                      /* IN  */
-    IF = 277,                      /* IF  */
-    ELSE = 278,                    /* ELSE  */
-    WHILE = 279,                   /* WHILE  */
-    FOR = 280,                     /* FOR  */
-    COLON = 281,                   /* COLON  */
-    MT = 282,                      /* MT  */
-    LT = 283,                      /* LT  */
-    EQ = 284,                      /* EQ  */
-    DIFF = 285,                    /* DIFF  */
-    NOT = 286,                     /* NOT  */
-    IMPORT = 287,                  /* IMPORT  */
-    FROM = 288,                    /* FROM  */
-    AS = 289,                      /* AS  */
-    INPUT = 290,                   /* INPUT  */
-    INT = 291,                     /* INT  */
-    DOUBLE = 292,                  /* DOUBLE  */
-    FLOAT = 293,                   /* FLOAT  */
-    COMPLEX = 294,                 /* COMPLEX  */
-    INDENT = 295,                  /* INDENT  */
-    DEDENT = 296,                  /* DEDENT  */
-    NEWLINE = 297                  /* NEWLINE  */
+    MOD = 276,                     /* MOD  */
+    IN = 277,                      /* IN  */
+    IF = 278,                      /* IF  */
+    ELSE = 279,                    /* ELSE  */
+    WHILE = 280,                   /* WHILE  */
+    FOR = 281,                     /* FOR  */
+    COLON = 282,                   /* COLON  */
+    MT = 283,                      /* MT  */
+    LT = 284,                      /* LT  */
+    EQ = 285,                      /* EQ  */
+    DIFF = 286,                    /* DIFF  */
+    NOT = 287,                     /* NOT  */
+    IMPORT = 288,                  /* IMPORT  */
+    FROM = 289,                    /* FROM  */
+    AS = 290,                      /* AS  */
+    INPUT = 291,                   /* INPUT  */
+    INT = 292,                     /* INT  */
+    DOUBLE = 293,                  /* DOUBLE  */
+    FLOAT = 294,                   /* FLOAT  */
+    COMPLEX = 295,                 /* COMPLEX  */
+    INDENT = 296,                  /* INDENT  */
+    DEDENT = 297,                  /* DEDENT  */
+    NEWLINE = 298                  /* NEWLINE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -109,7 +110,7 @@ union YYSTYPE
     char *id;
     struct ast_node *node;
 
-#line 113 "parser/parser.tab.h"
+#line 114 "parser/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

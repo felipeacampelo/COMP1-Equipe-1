@@ -27,4 +27,6 @@ void insert_symbol(char *name) {
     s->name = strdup(name);
     s->next = symtable[h];
     symtable[h] = s;
+
+    printf("Tabela de Símbolos Variável: '%s' alocada no bucket [%d]\n", name, h);
 }

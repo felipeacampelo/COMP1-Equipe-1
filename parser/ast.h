@@ -1,7 +1,6 @@
 #ifndef AST_H
 #define AST_H
 
-// Tipos de nós que o seu compilador Python reconhece
 typedef enum {
     NODE_INT,       // Números
     NODE_ID,        // Variáveis

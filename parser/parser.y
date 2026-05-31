@@ -22,6 +22,7 @@ void yyerror(const char *s);
 %token ASSIGN
 %token LPAREN RPAREN
 %token PRINT
+%token MOD
 %token IN IF ELSE WHILE FOR COLON
 %token MT LT EQ DIFF NOT
 %token IMPORT FROM AS
@@ -82,11 +83,13 @@ expr:
     | expr PLUS term  { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MINUS term { $$ = create_op_node(NODE_OP, $1, $3); }
     | expr MT term    { $$ = create_op_node(NODE_OP, $1, $3); }
+    | expr EQ term    { $$ = create_op_node(NODE_OP, $1, $3); }
 ;
 
 term:
     term TIMES factor { $$ = create_op_node(NODE_OP, $1, $3); }
     | term DIV factor { $$ = create_op_node(NODE_OP, $1, $3); }
+    | term MOD factor   { $$ = create_op_node(NODE_OP, $1, $3); }
     | factor          { $$ = $1; }
 ;
 
@@ -95,7 +98,7 @@ factor:
     | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
     | ID        { 
         if(lookup_symbol($1) == NULL) {
-            printf("-- [ERRO SEMANTICO] A variavel '%s' nao foi declarada!\n", $1);
+            printf("Erro sintatico: A variavel '%s' nao foi declarada!\n", $1);
         }
         $$ = create_id_node($1); }
     | LPAREN expr RPAREN { $$ = $2; }
