@@ -8,8 +8,8 @@ all:
  #Gera o arquivo flex
 	flex -o lexer/lex.yy.c lexer/lexer.l
 
- #Isso aqui é para compilar os dois arqvuios para criar o executavel
-	gcc parser/parser.tab.c lexer/lex.yy.c parser/ast.c -o $(TARGET) -lfl
+ #Isso aqui é para compilar os arquivos para criar o executavel
+	gcc parser/parser.tab.c lexer/lex.yy.c parser/ast.c parser/symtable.c -o $(TARGET) -lfl
 
 # Comando para limpar os arquivos gerados
 clean:

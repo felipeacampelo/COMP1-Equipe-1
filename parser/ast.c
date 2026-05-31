@@ -76,6 +76,15 @@ ASTNode* create_range_node(ASTNode *start, ASTNode *end) {
     return node;
 }
 
+ASTNode* create_if_else_node(ASTNode *condition, ASTNode *if_body, ASTNode *else_body) {
+    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+        node->type = NODE_IF_ELSE;
+        node->left = condition;
+        node->right = if_body;
+        node->else_body = else_body;
+    return node;
+}
+
 
 // Visualizador da árvore no terminal
 void print_tree(ASTNode *node, int level) {
@@ -113,6 +122,15 @@ void print_tree(ASTNode *node, int level) {
             print_tree(node->left, level + 1); // Condição
             print_tree(node->right, level + 1); // Corpo
             break;
+        
+        case NODE_IF_ELSE:
+            printf("IF\n");
+            print_tree(node->left, level + 1);  // Condição
+            print_tree(node->right, level + 1); // Corpo do IF
+            for (int i = 0; i < level; i++) printf("  "); // Mantém o alinhamento
+            printf("ELSE\n");
+            print_tree(node->else_body, level + 1); // Corpo do ELSE
+            break;    
 
         case NODE_WHILE:
             printf("WHILE\n");

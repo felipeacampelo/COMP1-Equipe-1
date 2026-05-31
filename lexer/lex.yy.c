@@ -2189,10 +2189,6 @@ void yyfree (void * ptr )
 #line 261 "lexer/lexer.l"
 
 
-int yywrap(void) {
-    return 1;
-}
-
 int main(void) {
     return yyparse();
 }

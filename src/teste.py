@@ -1,48 +1,29 @@
-# 1. Operacoes Basicas e Atribuicoes
-x = 10
-y = 20
-soma = x + y
-conta = x * 2 - 10 / y
+# 1. Atribuicoes, Variaveis e Operacoes (+, -, *, >, /)
+a = 10
+b = 5
+c = a + b
+d = c * 2
+e = d > a
 
-# 2. Comandos aninhados (If dentro de If) testando INDENT/DEDENT
-if (x > 5):
-    print(x)
-    if (y == 20):
-        print(y)
-        x = x + 1
+# 2. Comando Print
+print(e)
 
-# 3. Laco While tradicional
-contador = 0
-while (contador < 3):
-    contador = contador + 1
-    print(contador)
+# 3. IF com blocos indentados
+if (a > b):
+    print(a)
 
-# 4. O FOR com RANGE que acabamos de criar!
-for i in range(0, 5):
+# 4. IF e ELSE de uma linha so (Inline)
+if (c > 10): print(c) else: print(a)
+
+# 5. WHILE com bloco indentado
+while (a > 0):
+    a = a - 1
+    print(a)
+
+# 6. FOR loop com bloco indentado (Criando a variavel no loop)
+for i in c:
     print(i)
-    if (i > 2):
-        print(x)
 
-# 5. Teste de Imports (todas as variacoes do seu Bison)
+# 7. Regras de Importacao (Ignoradas graciosamente pela AST)
 import math
-import numpy as np
-from utils import helper
-from system import time as t
-
-# ---------------------------------------------------------
-# 6. ERROS INTENCIONAIS (O Teste de Fogo da Recuperacao)
-# O compilador DEVE acusar erro nessas linhas, mas NAO PODE travar!
-# ---------------------------------------------------------
-
-10 = x                 # Erro: Numero nao pode receber atribuicao
-if x > 5:              # Erro: Faltam os parenteses () do seu IF
-while (x > 0)          # Erro: Falta os dois pontos : no final
-x = 10 + * 5           # Erro: Dois operadores matematicos juntos
-print (                # Erro: Expressao incompleta (falta fechar parenteses)
-
-# ---------------------------------------------------------
-# 7. Teste de Sobrevivencia
-# Se a recuperacao de erro funcionou, a arvore DEVE registrar isso aqui:
-# ---------------------------------------------------------
-sobreviveu = 999
-print(sobreviveu)
+import pandas as pd

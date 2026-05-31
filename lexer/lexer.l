@@ -260,10 +260,6 @@ void push(int n){
 
 %%
 
-int yywrap(void) {
-    return 1;
-}
-
 int main(void) {
     return yyparse();
 }
