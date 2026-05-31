@@ -3,69 +3,84 @@
 #include <string.h>
 #include "ast.h"
 
-ASTNode* create_int_node(int val) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_int_node(int val){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = NODE_INT;
     node->int_val = val;
     node->left = node->right = NULL;
+
     return node;
 }
 
-ASTNode* create_id_node(char *id) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_id_node(char *id){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = NODE_ID;
     node->id_val = strdup(id);
     node->left = node->right = NULL;
 
-    
     return node;
 }
 
-ASTNode* create_op_node(NodeType type, ASTNode *left, ASTNode *right) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_op_node(NodeType type, ASTNode *left, ASTNode *right){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = type;
     node->left = left;
     node->right = right;
+
     return node;
 }
 
-ASTNode* create_if_node(ASTNode *codition, ASTNode *body) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_if_node(ASTNode *codition, ASTNode *body){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = NODE_IF;
     node->left = codition;
     node->right = body;
+
     return node;
 }
 
-ASTNode* create_while_node(ASTNode *codition, ASTNode *body) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_while_node(ASTNode *codition, ASTNode *body){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = NODE_WHILE;
     node->left = codition;
     node->right = body;
+
     return node;
 }
 
-ASTNode* create_print_node(ASTNode *expr) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_print_node(ASTNode *expr){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = NODE_PRINT;
     node->left = expr;
     node->right = NULL;
+
     return node;
 }
 
-ASTNode* create_block_node(ASTNode *v1, ASTNode *v2) {
-    ASTNode* node = (ASTNode*)malloc(sizeof(ASTNode));
+ASTNode *create_block_node(ASTNode *v1, ASTNode *v2){
+    ASTNode *node = (ASTNode*) malloc(sizeof(ASTNode));
+
     node->type = NODE_BLOCK;
     node->left = v1;
     node->right = v2;
+
     return node;
 }
-// Visualizador da árvore no terminal
-void print_tree(ASTNode *node, int level) {
-    if (!node) return;
-    for (int i = 0; i < level; i++) printf("  ");
 
-    switch (node->type) {
+void print_tree(ASTNode *node, int level){
+    if (!node)
+        return 1;
+
+    for(int i = 0; i < level; i++)
+        printf("  ");
+
+    switch(node->type){
         case NODE_INT: 
             printf("NUM: %d\n", node->int_val); 
             break;
@@ -108,7 +123,7 @@ void print_tree(ASTNode *node, int level) {
             if (node->right) print_tree(node->right, level);
             break;        
 
-        default: printf("No que nao sabemos\n");
+        default: 
+            printf("UNKNOW NODE\n");
     }
-    
 }

@@ -169,31 +169,36 @@ void push(int n) {
 }
 
 \r?\n[ \t]* { 
-    int indent = (yyleng-1) / 4;
-    if (yytext[0] == '\r') indent = (yyleng-2) / 4;
+    int indent = (yyleng - 1) / 4;
+
+    if(yytext[0] == '\r') indent = (yyleng-2) / 4;
+    
     if(indent > indents[top]) {
         push(indent);
+
         return INDENT;
-    }
-    else if(indent < indents[top]) {
+    }else if(indent < indents[top]) {
         while(indent < indents[top] && top > 0) {
             top--;
             pending_dents++;
         }
+        
         if(pending_dents > 1){
             unput(yytext[0]);
         }
+        
         pending_dents--;
+        
         return DEDENT;
-    }
-    else if(pending_dents >= 1){
+    }else if(pending_dents >= 1){
         if(pending_dents > 1){
             unput(yytext[0]);
         }
+
         pending_dents--;
+        
         return DEDENT;
-    }
-    else{
+    }else{
         return NEWLINE;
     }
 }
@@ -202,13 +207,17 @@ void push(int n) {
     if(pending_dents > 0){
         pending_dents--;
         unput(' ');
+
         return DEDENT;
     }
+
     if(indents[top] > 0){
         top--;
         unput(' ');
+
         return DEDENT;
     }
+
     return EOF;
 }
 
@@ -217,18 +226,18 @@ void push(int n) {
 
 %%
 
-int yywrap(void) {
+int yywrap(void){
     return 1;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv){
     indents[0] = 0;
-    /* Se houver arquivo de entrada como parâmetro, redireciona o yyin */
-    if (argc > 1) {
+    
+    if(argc > 1){
         FILE *f = fopen(argv[1], "r");
-        if (f) {
-            yyin = f;
-        }
+        
+        if(f) yyin = f;
     }
+
     return yyparse();
 }

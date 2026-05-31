@@ -7,7 +7,7 @@ int yylex();
 void yyerror(const char *s);
 %}
 
-%union {
+%union{
     int intValue;
     double floatValue;
     char *id;
@@ -40,8 +40,8 @@ void yyerror(const char *s);
 %%
 
 program:
-    stmt_list { 
-        if ($1) { 
+    stmt_list{ 
+        if($1){ 
             print_tree($1, 0); 
             printf("\n"); 
         } 
