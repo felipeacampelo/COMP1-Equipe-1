@@ -55,7 +55,6 @@ Esses tokens existem no scanner, mas ainda não fazem parte de uma gramática fi
 
 ### O que ainda não existe
 
-- tabela de símbolos
 - análise semântica
 - verificação de tipos
 - suporte completo a strings
