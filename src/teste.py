@@ -20,10 +20,10 @@ while (a > 0):
     a = a - 1
     print(a)
 
-# 6. FOR loop com bloco indentado (Criando a variavel no loop)
+# 6. FOR loop com bloco indentado
 for i in c:
     print(i)
 
-# 7. Regras de Importacao (Ignoradas graciosamente pela AST)
+# 7. Regras de Importacao
 import math
 import pandas as pd
