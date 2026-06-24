@@ -196,7 +196,7 @@ int label_count = 0;
 int new_temp() { return ++temp_count; }
 int new_label() { return ++label_count; }
 
-char* generate_tac(NoAST *node) {
+char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FILE *, acho que agora deve imprimir o arquivo.tac pra ver no final a impressão do código intermediário
     if (node == NULL) return "";
     static char result[50]; 
 
@@ -209,21 +209,21 @@ char* generate_tac(NoAST *node) {
             return node->id_val;
 
         case NODE_BLOCK:
-            generate_tac(node->left);
-            generate_tac(node->right);
+            generate_tac(node->left, saida_tac);
+            generate_tac(node->right, saida_tac);
             return "";
 
         case NODE_ASSIGN: {
-            char* right_side = generate_tac(node->right);
-            printf("\t%s = %s\n", node->left->id_val, right_side);
+            char* right_side = generate_tac(node->right, saida_tac);
+            fprintf(saida_tac, "\t%s = %s\n", node->left->id_val, right_side);
             return "";
         }
 
         case NODE_OP: {
-            char* left = generate_tac(node->left);
-            char* right = generate_tac(node->right);
+            char* left = generate_tac(node->left, saida_tac);
+            char* right = generate_tac(node->right, saida_tac);
             int temp = new_temp();
-            printf("\tt%d = %s %s %s\n", temp, left, node->op_val, right); 
+            fprintf(saida_tac, "\tt%d = %s %s %s\n", temp, left, node->op_val, right);
             sprintf(result, "t%d", temp);
             return strdup(result);
         }
@@ -231,40 +231,40 @@ char* generate_tac(NoAST *node) {
         case NODE_WHILE: {
             int l_start = new_label();
             int l_end = new_label();
-            printf("L%d:\n", l_start);
-            char* cond = generate_tac(node->left);
-            printf("\tIf(False) %s JMP L%d\n", cond, l_end);
-            generate_tac(node->right);
-            printf("\tJMP L%d\n", l_start);
-            printf("L%d:\n", l_end);
+            fprintf(saida_tac, "L%d:\n", l_start);
+            char* cond = generate_tac(node->left, saida_tac);
+            fprintf(saida_tac, "\tIf(False) %s JMP L%d\n", cond, l_end);
+            generate_tac(node->right, saida_tac);
+            fprintf(saida_tac, "\tJMP L%d\n", l_start);
+            fprintf(saida_tac, "L%d:\n", l_end);
             return "";
         }
 
         case NODE_IF: {
-            char* cond = generate_tac(node->left);
+            char* cond = generate_tac(node->left, saida_tac);
             int l_end = new_label();
-            printf("\tIf(False) %s JMP L%d\n", cond, l_end);
-            generate_tac(node->right);
-            printf("L%d:\n", l_end);
+            fprintf(saida_tac, "\tIf(False) %s JMP L%d\n", cond, l_end);
+            generate_tac(node->right, saida_tac);
+            fprintf(saida_tac, "L%d:\n", l_end);
             return "";
         }
 
         case NODE_IF_ELSE: {
-            char* cond = generate_tac(node->left);
+            char* cond = generate_tac(node->left, saida_tac);
             int l_false = new_label();
             int l_end = new_label();
-            printf("\tIf(False) %s JMP L%d\n", cond, l_false);
-            generate_tac(node->right); 
-            printf("\tJMP L%d\n", l_end);
-            printf("L%d:\n", l_false);
-            generate_tac(node->else_body); 
-            printf("L%d:\n", l_end);
+            fprintf(saida_tac, "\tIf(False) %s JMP L%d\n", cond, l_false);
+            generate_tac(node->right, saida_tac);
+            fprintf(saida_tac, "\tJMP L%d\n", l_end);
+            fprintf(saida_tac, "L%d:\n", l_false);
+            generate_tac(node->else_body, saida_tac);
+            fprintf(saida_tac, "L%d:\n", l_end);
             return "";
         }
 
         case NODE_PRINT: {
-            char* val = generate_tac(node->left);
-            printf("\tprint %s\n", val);
+            char* val = generate_tac(node->left, saida_tac);
+            fprintf(saida_tac, "\tprint %s\n", val);
             return "";
         }
         default: return "";
@@ -273,6 +273,14 @@ char* generate_tac(NoAST *node) {
 
 void compile_intermediate(NoAST *root) {
     optimize_ast(root);
-    printf("\n Codigo Intermediario - (TAC) \n"); //Imprime esse negocio
-    generate_tac(root);
+    FILE *saida_tac = fopen("compilador.tac", "w");
+    if (!saida_tac) {
+        printf("Erro ao criar arquivo de saida!\n");
+        return;
+    }
+    fprintf(saida_tac, "\n Codigo Intermediario - (TAC) \n"); //Imprime esse negocio
+    generate_tac(root, saida_tac);
+    fclose(saida_tac);
+
+    fprintf(saida_tac, "\n Codigo Intermediario gerado com sucesso em compilador.tac\n");
 }
