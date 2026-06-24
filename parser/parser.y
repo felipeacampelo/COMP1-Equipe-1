@@ -28,19 +28,22 @@ void yyerror(const char *s);
 %token IMPORT FROM AS
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
+
 %token INDENT DEDENT NEWLINE
 
 %left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
 
+//%type <floatValue> expr term factor
+
 %type <node> expr term factor stmt stmt_list program
 
 %%
 
 program:
-    stmt_list { 
-        if ($1) { 
+    stmt_list{ 
+        if($1){ 
             print_tree($1, 0); 
             printf("\n"); 
             compile_intermediate($1);
@@ -49,11 +52,11 @@ program:
 ;
 
 stmt_list:
-      stmt               { $$ = $1; }
-    | stmt_list stmt     { $$ = create_block_node($1, $2); }
-    | stmt_list NEWLINE  { $$ = $1; } /* Aceita quebras de linha normais */
-    | NEWLINE            { $$ = NULL; }
-    | error NEWLINE      { 
+    stmt { $$ = $1; }
+    | stmt_list stmt { $$ = create_block_node($1, $2); }
+    | stmt_list NEWLINE { $$ = $1; } /* Aceita quebras de linha normais */
+    | NEWLINE { $$ = NULL; }
+    | error NEWLINE { 
         yyerrok; 
         yyclearin; 
         printf("[ERRO] Sintaxe invalida nesta linha. Pulando para a proxima...\n"); 
@@ -98,18 +101,19 @@ term:
 
 
 factor:
-    NUM         { $$ = create_int_node($1); }
+    NUM { $$ = create_int_node($1); }
     | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
-    | ID        { 
+    | ID { 
         if(lookup_symbol($1) == NULL) {
             printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
         }
+
         $$ = create_id_node($1); }
     | LPAREN expr RPAREN { $$ = $2; }
 ;
 
 %%
 
-void yyerror(const char *s){
+void yyerror(const char *s) {
     printf("Erro sintatico\n");
 }

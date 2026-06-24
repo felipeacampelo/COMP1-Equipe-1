@@ -546,10 +546,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    42,    42,    52,    53,    54,    55,    56,    66,    67,
-      68,    69,    70,    71,    72,    73,    73,    74,    75,    76,
-      77,    78,    79,    83,    85,    86,    87,    88,    89,    90,
-      94,    95,    96,    97,   102,   103,   104,   109
+       0,    45,    45,    55,    56,    57,    58,    59,    69,    70,
+      71,    72,    73,    74,    75,    76,    76,    77,    78,    79,
+      80,    81,    82,    86,    87,    88,    89,    90,    91,    92,
+      96,    97,    98,    99,   104,   105,   106,   112
 };
 #endif
 
@@ -1192,9 +1192,9 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: stmt_list  */
-#line 42 "parser/parser.y"
-              { 
-        if ((yyvsp[0].node)) { 
+#line 45 "parser/parser.y"
+             { 
+        if((yyvsp[0].node)){ 
             print_tree((yyvsp[0].node), 0); 
             printf("\n"); 
             compile_intermediate((yyvsp[0].node));
@@ -1204,32 +1204,32 @@ yyreduce:
     break;
 
   case 3: /* stmt_list: stmt  */
-#line 52 "parser/parser.y"
-                         { (yyval.node) = (yyvsp[0].node); }
+#line 55 "parser/parser.y"
+         { (yyval.node) = (yyvsp[0].node); }
 #line 1210 "parser/parser.tab.c"
     break;
 
   case 4: /* stmt_list: stmt_list stmt  */
-#line 53 "parser/parser.y"
-                         { (yyval.node) = create_block_node((yyvsp[-1].node), (yyvsp[0].node)); }
+#line 56 "parser/parser.y"
+                     { (yyval.node) = create_block_node((yyvsp[-1].node), (yyvsp[0].node)); }
 #line 1216 "parser/parser.tab.c"
     break;
 
   case 5: /* stmt_list: stmt_list NEWLINE  */
-#line 54 "parser/parser.y"
-                         { (yyval.node) = (yyvsp[-1].node); }
+#line 57 "parser/parser.y"
+                        { (yyval.node) = (yyvsp[-1].node); }
 #line 1222 "parser/parser.tab.c"
     break;
 
   case 6: /* stmt_list: NEWLINE  */
-#line 55 "parser/parser.y"
-                         { (yyval.node) = NULL; }
+#line 58 "parser/parser.y"
+              { (yyval.node) = NULL; }
 #line 1228 "parser/parser.tab.c"
     break;
 
   case 7: /* stmt_list: error NEWLINE  */
-#line 56 "parser/parser.y"
-                         { 
+#line 59 "parser/parser.y"
+                    { 
         yyerrok; 
         yyclearin; 
         printf("[ERRO] Sintaxe invalida nesta linha. Pulando para a proxima...\n"); 
@@ -1239,185 +1239,186 @@ yyreduce:
     break;
 
   case 8: /* stmt: ID ASSIGN expr  */
-#line 66 "parser/parser.y"
+#line 69 "parser/parser.y"
                    { insert_symbol((yyvsp[-2].id)); (yyval.node) = create_op_node(NODE_ASSIGN, "=", create_id_node((yyvsp[-2].id)), (yyvsp[0].node)); }
 #line 1245 "parser/parser.tab.c"
     break;
 
   case 9: /* stmt: PRINT LPAREN expr RPAREN  */
-#line 67 "parser/parser.y"
+#line 70 "parser/parser.y"
                                { (yyval.node) = create_print_node((yyvsp[-1].node)); }
 #line 1251 "parser/parser.tab.c"
     break;
 
   case 10: /* stmt: IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT  */
-#line 68 "parser/parser.y"
+#line 71 "parser/parser.y"
                                                           { (yyval.node) = create_if_node((yyvsp[-5].node), (yyvsp[-1].node)); }
 #line 1257 "parser/parser.tab.c"
     break;
 
   case 11: /* stmt: IF LPAREN expr RPAREN COLON stmt ELSE COLON stmt  */
-#line 69 "parser/parser.y"
+#line 72 "parser/parser.y"
                                                        { (yyval.node) = create_if_else_node((yyvsp[-6].node), (yyvsp[-3].node), (yyvsp[0].node)); }
 #line 1263 "parser/parser.tab.c"
     break;
 
   case 12: /* stmt: IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT ELSE COLON INDENT stmt_list DEDENT  */
-#line 70 "parser/parser.y"
+#line 73 "parser/parser.y"
                                                                                              { (yyval.node) = create_if_else_node((yyvsp[-10].node), (yyvsp[-6].node), (yyvsp[-1].node)); }
 #line 1269 "parser/parser.tab.c"
     break;
 
   case 13: /* stmt: WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT  */
-#line 71 "parser/parser.y"
+#line 74 "parser/parser.y"
                                                              { (yyval.node) = create_while_node((yyvsp[-5].node), (yyvsp[-1].node)); }
 #line 1275 "parser/parser.tab.c"
     break;
 
   case 14: /* stmt: expr  */
-#line 72 "parser/parser.y"
+#line 75 "parser/parser.y"
            { (yyval.node) = (yyvsp[0].node); }
 #line 1281 "parser/parser.tab.c"
     break;
 
   case 15: /* $@1: %empty  */
-#line 73 "parser/parser.y"
+#line 76 "parser/parser.y"
              { insert_symbol((yyvsp[0].id)); }
 #line 1287 "parser/parser.tab.c"
     break;
 
   case 16: /* stmt: FOR ID $@1 IN expr COLON INDENT stmt_list DEDENT  */
-#line 73 "parser/parser.y"
+#line 76 "parser/parser.y"
                                                                           { (yyval.node) = create_for_node(create_id_node((yyvsp[-7].id)), (yyvsp[-1].node), (yyvsp[-4].node)); }
 #line 1293 "parser/parser.tab.c"
     break;
 
   case 17: /* stmt: WHILE LPAREN expr RPAREN COLON stmt  */
-#line 74 "parser/parser.y"
+#line 77 "parser/parser.y"
                                           { (yyval.node) = create_while_node((yyvsp[-3].node), (yyvsp[0].node)); }
 #line 1299 "parser/parser.tab.c"
     break;
 
   case 18: /* stmt: IF LPAREN expr RPAREN COLON stmt  */
-#line 75 "parser/parser.y"
+#line 78 "parser/parser.y"
                                        { (yyval.node) = create_if_node((yyvsp[-3].node), (yyvsp[0].node)); }
 #line 1305 "parser/parser.tab.c"
     break;
 
   case 19: /* stmt: IMPORT ID  */
-#line 76 "parser/parser.y"
+#line 79 "parser/parser.y"
                 { (yyval.node) = NULL; }
 #line 1311 "parser/parser.tab.c"
     break;
 
   case 20: /* stmt: FROM ID IMPORT ID  */
-#line 77 "parser/parser.y"
+#line 80 "parser/parser.y"
                         { (yyval.node) = NULL; }
 #line 1317 "parser/parser.tab.c"
     break;
 
   case 21: /* stmt: FROM ID IMPORT ID AS ID  */
-#line 78 "parser/parser.y"
+#line 81 "parser/parser.y"
                               { (yyval.node) = NULL; }
 #line 1323 "parser/parser.tab.c"
     break;
 
   case 22: /* stmt: IMPORT ID AS ID  */
-#line 79 "parser/parser.y"
+#line 82 "parser/parser.y"
                       { (yyval.node) = NULL; }
 #line 1329 "parser/parser.tab.c"
     break;
 
   case 24: /* expr: expr PLUS term  */
-#line 85 "parser/parser.y"
+#line 87 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "+", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1335 "parser/parser.tab.c"
     break;
 
   case 25: /* expr: expr MINUS term  */
-#line 86 "parser/parser.y"
+#line 88 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "-", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1341 "parser/parser.tab.c"
     break;
 
   case 26: /* expr: expr MT term  */
-#line 87 "parser/parser.y"
+#line 89 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, ">", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1347 "parser/parser.tab.c"
     break;
 
   case 27: /* expr: expr LT term  */
-#line 88 "parser/parser.y"
+#line 90 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "<", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1353 "parser/parser.tab.c"
     break;
 
   case 28: /* expr: expr EQ term  */
-#line 89 "parser/parser.y"
+#line 91 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "==", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1359 "parser/parser.tab.c"
     break;
 
   case 29: /* expr: expr DIFF term  */
-#line 90 "parser/parser.y"
+#line 92 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "!=", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1365 "parser/parser.tab.c"
     break;
 
   case 30: /* term: term TIMES factor  */
-#line 94 "parser/parser.y"
+#line 96 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "*", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1371 "parser/parser.tab.c"
     break;
 
   case 31: /* term: term DIV factor  */
-#line 95 "parser/parser.y"
+#line 97 "parser/parser.y"
                       { (yyval.node) = create_op_node(NODE_OP, "/", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1377 "parser/parser.tab.c"
     break;
 
   case 32: /* term: term MOD factor  */
-#line 96 "parser/parser.y"
+#line 98 "parser/parser.y"
                         { (yyval.node) = create_op_node(NODE_OP, "%", (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1383 "parser/parser.tab.c"
     break;
 
   case 33: /* term: factor  */
-#line 97 "parser/parser.y"
+#line 99 "parser/parser.y"
                       { (yyval.node) = (yyvsp[0].node); }
 #line 1389 "parser/parser.tab.c"
     break;
 
   case 34: /* factor: NUM  */
-#line 102 "parser/parser.y"
-                { (yyval.node) = create_int_node((yyvsp[0].intValue)); }
+#line 104 "parser/parser.y"
+        { (yyval.node) = create_int_node((yyvsp[0].intValue)); }
 #line 1395 "parser/parser.tab.c"
     break;
 
   case 35: /* factor: FLOAT_NUM  */
-#line 103 "parser/parser.y"
+#line 105 "parser/parser.y"
                 { (yyval.node) = create_int_node((int)(yyvsp[0].floatValue)); }
 #line 1401 "parser/parser.tab.c"
     break;
 
   case 36: /* factor: ID  */
-#line 104 "parser/parser.y"
-                { 
+#line 106 "parser/parser.y"
+         { 
         if(lookup_symbol((yyvsp[0].id)) == NULL) {
             printf("Erro sintático: A variável '%s' não foi declarada!\n", (yyvsp[0].id));
         }
+
         (yyval.node) = create_id_node((yyvsp[0].id)); }
-#line 1411 "parser/parser.tab.c"
+#line 1412 "parser/parser.tab.c"
     break;
 
   case 37: /* factor: LPAREN expr RPAREN  */
-#line 109 "parser/parser.y"
+#line 112 "parser/parser.y"
                          { (yyval.node) = (yyvsp[-1].node); }
-#line 1417 "parser/parser.tab.c"
+#line 1418 "parser/parser.tab.c"
     break;
 
 
-#line 1421 "parser/parser.tab.c"
+#line 1422 "parser/parser.tab.c"
 
       default: break;
     }
@@ -1610,9 +1611,9 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 112 "parser/parser.y"
+#line 115 "parser/parser.y"
 
 
-void yyerror(const char *s){
+void yyerror(const char *s) {
     printf("Erro sintatico\n");
 }

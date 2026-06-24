@@ -2,18 +2,17 @@
 #define AST_H
 
 typedef enum {
-    NODE_INT,       // Números
-    NODE_ID,        // Variáveis
-    NODE_OP,        // Operações (+, -, *, /)
-    NODE_PRINT,     // Comando print
-    NODE_ASSIGN,    // Atribuição (=)
-    NODE_IF,        // Comando If
-    NODE_IF_ELSE,    // Adicione mais tipos de nós conforme necessário
-    NODE_WHILE,     // Comando while
-    NODE_FOR,       // Comando for
-    NODE_RANGE,     // Comando for e range
-    NODE_BLOCK     // Comando para blocos de código (if, while, for)
-    
+    NODE_INT,       
+    NODE_ID,        
+    NODE_OP,        
+    NODE_PRINT,     
+    NODE_ASSIGN,    
+    NODE_IF,        
+    NODE_IF_ELSE,   
+    NODE_WHILE,     
+    NODE_FOR,       
+    NODE_RANGE,     
+    NODE_BLOCK     
 } NodeType;
 
 typedef struct no_ast {

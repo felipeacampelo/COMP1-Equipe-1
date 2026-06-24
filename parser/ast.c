@@ -273,6 +273,6 @@ char* generate_tac(NoAST *node) {
 
 void compile_intermediate(NoAST *root) {
     optimize_ast(root);
-    printf("\n--- CODIGO INTERMEDIARIO (TAC) ---\n");
+    printf("\n Codigo Intermediario - (TAC) \n"); //Imprime esse negocio
     generate_tac(root);
 }
