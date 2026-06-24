@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../parser/symtable.h"
 #include "../parser/parser.tab.h" 
+
+int yyparse(void);
 
 int indents[100];
 int top = 0;

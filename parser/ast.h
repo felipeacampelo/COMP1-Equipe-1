@@ -3,6 +3,7 @@
 
 typedef enum {
     NODE_INT,       
+    NODE_FLOAT,
     NODE_ID,        
     NODE_OP,        
     NODE_PRINT,     
@@ -29,6 +30,7 @@ typedef struct no_ast {
 
 // Funções para criar os nós
 NoAST* create_int_node(int val);
+NoAST* create_float_node(double val);
 NoAST* create_id_node(char *id);
 NoAST* create_op_node(NodeType type, char *op, NoAST *left, NoAST *right);
 NoAST* create_print_node(NoAST *expr);

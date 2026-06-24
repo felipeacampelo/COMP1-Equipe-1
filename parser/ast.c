@@ -7,6 +7,17 @@ NoAST* create_int_node(int val) {
     NoAST* node = (NoAST*)malloc(sizeof(NoAST));
         node->type = NODE_INT;
         node->int_val = val;
+        node->float_val = val;
+        node->op_val = NULL;
+        node->left = node->right = NULL;
+    return node;
+}
+
+NoAST* create_float_node(double val) {
+    NoAST* node = (NoAST*)malloc(sizeof(NoAST));
+        node->type = NODE_FLOAT;
+        node->float_val = val;
+        node->int_val = (int)val;
         node->op_val = NULL;
         node->left = node->right = NULL;
     return node;
@@ -95,6 +106,10 @@ void print_tree(NoAST *node, int level) {
     switch (node->type) {
         case NODE_INT: 
             printf("NUM: %d\n", node->int_val); 
+            break;
+
+        case NODE_FLOAT:
+            printf("FLOAT: %.2f\n", node->float_val);
             break;
 
         case NODE_ID:  
@@ -204,6 +219,10 @@ char* generate_tac(NoAST *node) {
         case NODE_INT: 
             sprintf(result, "%d", node->int_val);
             return strdup(result);
+
+        case NODE_FLOAT:
+            sprintf(result, "%.2f", node->float_val);
+            return strdup(result);
             
         case NODE_ID:
             return node->id_val;
@@ -272,6 +291,8 @@ char* generate_tac(NoAST *node) {
 }
 
 void compile_intermediate(NoAST *root) {
+    temp_count = 0;
+    label_count = 0;
     optimize_ast(root);
     printf("\n Codigo Intermediario - (TAC) \n"); //Imprime esse negocio
     generate_tac(root);
