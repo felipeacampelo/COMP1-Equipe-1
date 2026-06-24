@@ -104,6 +104,11 @@ void push(int n) {
     return NUM;
 }
 
+\"[^\"]*\" {
+    yylval.id = strdup(yytext);
+    return STRING_VAL;
+}
+
 "++" {
     return INCREMENT;
 }
