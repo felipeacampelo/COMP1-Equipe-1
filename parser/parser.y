@@ -71,6 +71,38 @@ stmt_list:
 
 stmt:
     ID ASSIGN expr { insert_symbol($1); $$ = create_op_node(NODE_ASSIGN, "=", create_id_node($1), $3); }
+    | ID PLUS_ATRIBUTION expr {
+        insert_symbol($1);
+
+        NoAST *id = create_id_node($1);
+        NoAST *op = create_op_node(NODE_OP, "+", id, $3);
+
+        $$ = create_op_node(NODE_ASSIGN, "=", id, op);
+    }
+    | ID MINUS_ATRIBUTION expr {
+        insert_symbol($1);
+
+        NoAST *id = create_id_node($1);
+        NoAST *op = create_op_node(NODE_OP, "-", id, $3);
+
+        $$ = create_op_node(NODE_ASSIGN, "=", id, op);
+    }
+    | ID TIMES_ATRIBUTION expr {
+        insert_symbol($1);
+
+        NoAST *id = create_id_node($1);
+        NoAST *op = create_op_node(NODE_OP, "*", id, $3);
+
+        $$ = create_op_node(NODE_ASSIGN, "=", id, op);
+    }
+    | ID DIV_ATRIBUTION expr {
+        insert_symbol($1);
+
+        NoAST *id = create_id_node($1);
+        NoAST *op = create_op_node(NODE_OP, "/", id, $3);
+
+        $$ = create_op_node(NODE_ASSIGN, "=", id, op);
+    }
     | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
     | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_if_node($3, $7); }
     | IF LPAREN expr RPAREN COLON stmt ELSE COLON stmt { $$ = create_if_else_node($3, $6, $9); }
