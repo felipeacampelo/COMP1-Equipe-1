@@ -16,30 +16,34 @@ typedef enum {
     
 } NodeType;
 
-typedef struct ast_node {
+typedef struct no_ast {
     NodeType type;
     int int_val;
     double float_val;            
     char *id_val;           
-    struct ast_node *left;  
-    struct ast_node *right; 
-    struct ast_node *else_body;
-} ASTNode;
+    char *op_val;
+    struct no_ast *left;  
+    struct no_ast *right; 
+    struct no_ast *else_body;
+
+} NoAST;
 
 // Funções para criar os nós
-ASTNode* create_int_node(int val);
-ASTNode* create_id_node(char *id);
-ASTNode* create_op_node(NodeType type, ASTNode *left, ASTNode *right);
-ASTNode* create_print_node(ASTNode *expr);
-ASTNode* create_if_node(ASTNode *codition, ASTNode *body);
-ASTNode* create_if_else_node(ASTNode *condition, ASTNode *if_body, ASTNode *else_body);
-ASTNode* create_while_node(ASTNode *codition, ASTNode *body);
-ASTNode* create_block_node(ASTNode *v1, ASTNode *v2);
-ASTNode* create_range_node(ASTNode *start, ASTNode *end);
-ASTNode* create_for_node(ASTNode *iter_var, ASTNode *body, ASTNode *iterable);
+NoAST* create_int_node(int val);
+NoAST* create_id_node(char *id);
+NoAST* create_op_node(NodeType type, char *op, NoAST *left, NoAST *right);
+NoAST* create_print_node(NoAST *expr);
+NoAST* create_if_node(NoAST *codition, NoAST *body);
+NoAST* create_if_else_node(NoAST *condition, NoAST *if_body, NoAST *else_body);
+NoAST* create_while_node(NoAST *codition, NoAST *body);
+NoAST* create_block_node(NoAST *v1, NoAST *v2);
+NoAST* create_range_node(NoAST *start, NoAST *end);
+NoAST* create_for_node(NoAST *iter_var, NoAST *body, NoAST *iterable);
 
 
 
-void print_tree(ASTNode *node, int level);
+void print_tree(NoAST *node, int level);
+void optimize_ast(NoAST *node);
+void compile_intermediate(NoAST *root);
 
 #endif

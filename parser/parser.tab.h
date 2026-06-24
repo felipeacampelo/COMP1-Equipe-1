@@ -108,7 +108,7 @@ union YYSTYPE
     int intValue;
     double floatValue;
     char *id;
-    struct ast_node *node;
+    struct no_ast *node;
 
 #line 114 "parser/parser.tab.h"
 
