@@ -20,6 +20,7 @@ parser/parser.tab.h
 
 # Arquivos gerados do backend Java
 Main.java
+Main.class
 
 # Arquivos temporários do editor
 *~
