@@ -16,6 +16,8 @@ Symbol* lookup_symbol(char *name) {
     // Procura na lista ligada em apenas 2 linhas
     for(Symbol *s = symtable[hash(name)]; s != NULL; s = s->next)
         if(strcmp(s->name, name) == 0) return s;
+
+        
     return NULL; 
 }
 
