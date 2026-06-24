@@ -217,6 +217,7 @@ void optimize_ast(NoAST *node) {
         else if (strcmp(node->op_val, "-") == 0) result = v_left - v_right;
         else if (strcmp(node->op_val, "*") == 0) result = v_left * v_right;
         else if (strcmp(node->op_val, "/") == 0 && v_right != 0) result = v_left / v_right;
+        else if (strcmp(node->op_val, "//") == 0 && v_right != 0) result = v_left / v_right;
         else return;
 
         node->type = NODE_INT;
@@ -278,6 +279,23 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
                 return strdup(result);
             }
 
+            if(strcmp(node->op_val, "//") == 0){
+                char* left = generate_tac(node->left, saida_tac);
+                char* right = generate_tac(node->right, saida_tac);
+
+                int temp = new_temp();
+
+                fprintf(saida_tac,
+                        "\tt%d = %s / %s\n",
+                    temp,
+                    left,
+                    right
+                );
+
+                sprintf(result, "t%d", temp);
+                return strdup(result);
+            }
+
             char* left = generate_tac(node->left, saida_tac);
             char* right = generate_tac(node->right, saida_tac);
 
@@ -291,7 +309,7 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
                 right);
 
             sprintf(result, "t%d", temp);
-            
+
             return strdup(result);
         }
 

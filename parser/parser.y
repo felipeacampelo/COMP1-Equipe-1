@@ -101,6 +101,7 @@ term:
     | term DIV factor { $$ = create_op_node(NODE_OP, "/", $1, $3); }
     | term MOD factor   { $$ = create_op_node(NODE_OP, "%", $1, $3); }
     | factor          { $$ = $1; }
+    | term INT_DIV factor { $$ = create_op_node(NODE_OP, "//", $1, $3); }
 ;
 
 
