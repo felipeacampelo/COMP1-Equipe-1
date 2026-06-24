@@ -1,1 +1,9 @@
-@ = 10
+iteracao = 1
+maximo = 5
+texto = "Processando iteracoes"
+print(texto)
+
+while (iteracao < maximo):
+    iteracao = iteracao + 1
+    resultado_invalido = iteracao + @
+    print(resultado_invalido)

@@ -1,5 +1,12 @@
-n = 10
-if (n > 5):
-    print(n)
+numero = 15
+texto_par = "O numero eh positivo e PAR"
+texto_impar = "O numero eh positivo e IMPAR"
+texto_negativo = "Erro: Valor negativo"
+
+if (numero > 0):
+    if (numero % 2 == 0):
+        print(texto_par)
+    else:
+        print(texto_impar)
 else:
-    print(0)
+    print(texto_negativo)
