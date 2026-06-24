@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include "ast.h"
 #include "symtable.h"
+#include "../java_gen.h"
 
 int yylex();
 void yyerror(const char *s);
@@ -118,6 +119,7 @@ program:
 
             if(semantic_errors == 0) {
                 compile_intermediate($1);
+                compile_java($1, "Main.java");
             } else {
                 printf(
                     "\nCompilacao interrompida: %d erro(s) semantico(s) encontrado(s).\n",
