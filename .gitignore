@@ -14,7 +14,12 @@ lex.yy.c
 # Arquivos gerados pelo Bison
 parser.tab.c
 parser.tab.h
+parser/parser.tab.c
+parser/parser.tab.h
 *.output
+
+# Arquivos gerados do backend Java
+Main.java
 
 # Arquivos temporários do editor
 *~
