@@ -26,6 +26,7 @@ void yyerror(const char *s);
 %token IN IF ELSE WHILE FOR COLON
 %token MT LT EQ DIFF NOT
 %token IMPORT FROM AS
+%token <intValue> BOOL
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
 %token <id> STRING
@@ -103,6 +104,7 @@ term:
 
 factor:
     NUM { $$ = create_int_node($1); }
+    | BOOL { $$ = create_bool_node($1); }
     | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
     | STRING { && = create_string_node($1); }
     | ID { 

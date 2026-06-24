@@ -49,6 +49,16 @@ void push(int n) {
     return FROM;
 }
 
+"True" {
+    yylval.intValue = 1;
+    return BOOL;
+}
+
+"False" {
+    yylval.intValeu = 0;
+    return BOOL;
+}
+
 "input" {
     return INPUT;
 }
@@ -104,7 +114,7 @@ void push(int n) {
     return NUM;
 }
 
-\"([^\\\"]|\\.)*\" {
+\"([^\\\"]|\\.)*\" { /* A string é tratada sem as aspas */
     char *s = strdup(yytext);
 
     s[strlen(s)-1] = '\0';
@@ -115,7 +125,6 @@ void push(int n) {
 
     return STRING;
 }
-
 
 "++" {
     return INCREMENT;
