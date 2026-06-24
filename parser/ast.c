@@ -273,14 +273,13 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
 
 void compile_intermediate(NoAST *root) {
     optimize_ast(root);
-    FILE *saida_tac = fopen("compilador.tac", "w");
+    FILE *saida_tac = fopen("compilador.tac", "w");  //arquivo.tac (cat compilador.tac) para ver o código intermediário gerado
     if (!saida_tac) {
         printf("Erro ao criar arquivo de saida!\n");
         return;
     }
     fprintf(saida_tac, "\n Codigo Intermediario - (TAC) \n"); //Imprime esse negocio
     generate_tac(root, saida_tac);
-    fclose(saida_tac);
-
     fprintf(saida_tac, "\n Codigo Intermediario gerado com sucesso em compilador.tac\n");
+    fclose(saida_tac);
 }
