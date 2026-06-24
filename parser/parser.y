@@ -37,6 +37,8 @@ void yyerror(const char *s);
 %left PLUS MINUS
 %left TIMES DIV
 
+%right NOT
+
 //%type <floatValue> expr term factor
 
 %type <node> expr term factor stmt stmt_list program
@@ -111,8 +113,8 @@ factor:
         if(lookup_symbol($1) == NULL) {
             printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
         }
-
         $$ = create_id_node($1); }
+    | NOT factor { $$ = create_op_node(NODE_OP, "!", $2, NULL); }
     | LPAREN expr RPAREN { $$ = $2; }
 ;
 

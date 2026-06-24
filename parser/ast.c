@@ -135,9 +135,12 @@ void print_tree(NoAST *node, int level) {
             break;
 
         case NODE_OP:  
-            // Agora imprime o símbolo junto
-            if(node->op_val) printf("OPERADOR: %s\n", node->op_val); 
-            else printf("OPERADOR\n");
+            if(node->right == NULL){
+                printf("OPERADOR UNARIO: %s\n", node->op_val);
+            }else{
+                printf("OPERADOR: %s\n", node->op_val);
+            }
+
             print_tree(node->left, level + 1);
             print_tree(node->right, level + 1);
             break;
@@ -259,11 +262,36 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
         }
 
         case NODE_OP: {
+            if(strcmp(node->op_val, "!") == 0) {
+
+            char* val = generate_tac(node->left, saida_tac);
+
+            int temp = new_temp();
+
+            fprintf(saida_tac,
+                "\tt%d = ! %s\n",
+                temp,
+                val);
+
+            sprintf(result, "t%d", temp);
+
+                return strdup(result);
+            }
+
             char* left = generate_tac(node->left, saida_tac);
             char* right = generate_tac(node->right, saida_tac);
+
             int temp = new_temp();
-            fprintf(saida_tac, "\tt%d = %s %s %s\n", temp, left, node->op_val, right);
+
+            fprintf(saida_tac, 
+                "\tt%d = %s %s %s\n", 
+                temp, 
+                left, 
+                node->op_val, 
+                right);
+
             sprintf(result, "t%d", temp);
+            
             return strdup(result);
         }
 

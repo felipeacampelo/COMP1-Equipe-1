@@ -83,7 +83,7 @@ void push(int n) {
     return MOD;
 }
 
-"!" {
+"not" {
     return NOT;
 }
 
