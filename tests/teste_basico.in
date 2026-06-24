@@ -1,0 +1,13 @@
+raio = 5.5
+pi = 3.1415
+fator = 2
+area = pi * (raio * raio)
+dobro_area = area * fator
+
+mensagem_inicio = "Calculando a area do circulo:"
+mensagem_fim = "O dobro da area eh:"
+
+print(mensagem_inicio)
+print(area)
+print(mensagem_fim)
+print(dobro_area)

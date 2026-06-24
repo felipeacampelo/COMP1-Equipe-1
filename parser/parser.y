@@ -18,6 +18,7 @@ void yyerror(const char *s);
 %token <intValue> NUM
 %token <floatValue> FLOAT_NUM
 %token <id> ID
+%token <id> STRING_VAL
 %token PLUS PLUS_ATRIBUTION MINUS MINUS_ATRIBUTION TIMES TIMES_ATRIBUTION DIV DIV_ATRIBUTION INT_DIV INT_DIV_ATRIBUTION INCREMENT
 %token ASSIGN
 %token LPAREN RPAREN
@@ -102,13 +103,14 @@ term:
 
 factor:
     NUM { $$ = create_int_node($1); }
-    | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
+    | FLOAT_NUM { $$ = create_float_node($1); } 
+    | STRING_VAL { $$ = create_string_node($1); }
     | ID { 
         if(lookup_symbol($1) == NULL) {
             printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
         }
-
-        $$ = create_id_node($1); }
+        $$ = create_id_node($1); 
+    }
     | LPAREN expr RPAREN { $$ = $2; }
 ;
 

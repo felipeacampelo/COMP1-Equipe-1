@@ -1,0 +1,13 @@
+contador = 10
+soma_pares = 0
+titulo = "Iniciando soma dos numeros pares..."
+print(titulo)
+
+while (contador > 0):
+    if (contador % 2 == 0):
+        soma_pares = soma_pares + contador
+    contador = contador - 1
+
+fim = "Fim do laco. Resultado final:"
+print(fim)
+print(soma_pares)
