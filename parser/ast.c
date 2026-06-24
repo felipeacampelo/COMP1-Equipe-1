@@ -368,5 +368,5 @@ void compile_intermediate(NoAST *root) {
     fprintf(saida_java, "    }\n");
     fprintf(saida_java, "}\n");
 
-    fclose(saida_java);
+    fclose(saida_java); // fecha o arquivo
 }
