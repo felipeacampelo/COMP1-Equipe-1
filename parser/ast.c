@@ -194,6 +194,10 @@ void print_tree(NoAST *node, int level) {
             print_tree(node->right, level + 1);
             break;    
 
+        case NODE_INPUT:
+            printf("INPUT()\n");
+            break;
+
         default: printf("No que nao sabemos\n");
     }
     
@@ -353,6 +357,17 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
             return "";
         }
         default: return "";
+
+        case NODE_INPUT: {
+            int temp = new_temp();
+
+            fprintf(saida_tac,
+                "\tt%d = input\n",
+                temp);
+
+            sprintf(result, "t%d", temp);
+            return strdup(result);
+        }
     }
 }
 

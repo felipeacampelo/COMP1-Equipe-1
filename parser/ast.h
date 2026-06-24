@@ -14,7 +14,8 @@ typedef enum {
     NODE_WHILE,     
     NODE_FOR,       
     NODE_RANGE,     
-    NODE_BLOCK     
+    NODE_BLOCK,
+    NODE_INPUT     
 } NodeType;
 
 typedef struct no_ast {

@@ -149,6 +149,7 @@ factor:
         $$ = create_id_node($1); }
     | NOT factor { $$ = create_op_node(NODE_OP, "!", $2, NULL); }
     | LPAREN expr RPAREN { $$ = $2; }
+    | INPUT LPAREN RPAREN { $$ = create_op_node(NODE_INPUT, "input", NULL, NULL); }
 ;
 
 %%
