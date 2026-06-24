@@ -102,6 +102,9 @@ static void validate_condition(SymbolType type, const char *context) {
 
 %token INDENT DEDENT NEWLINE
 
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+
 %left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
@@ -150,7 +153,7 @@ stmt:
         $$ = create_op_node(NODE_ASSIGN, "=", create_id_node($1), $3.node);
     }
     | PRINT LPAREN expr RPAREN { $$ = create_print_node($3.node); }
-    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT {
+    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT %prec LOWER_THAN_ELSE {
         validate_condition($3.type, "if");
         $$ = create_if_node($3.node, $7);
     }
@@ -181,7 +184,7 @@ stmt:
         validate_condition($3.type, "while");
         $$ = create_while_node($3.node, $6);
     }
-    | IF LPAREN expr RPAREN COLON stmt {
+    | IF LPAREN expr RPAREN COLON stmt %prec LOWER_THAN_ELSE {
         validate_condition($3.type, "if");
         $$ = create_if_node($3.node, $6);
     }
