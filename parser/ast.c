@@ -113,6 +113,19 @@ NoAST* create_string_node(char *str) {
     return node;
 }
 
+NoAST* create_float_node(double val) {
+    NoAST* node = malloc(sizeof(NoAST));
+
+    node->type = NODE_FLOAT;
+    node->float_val = val;
+
+    node->left = NULL;
+    node->right = NULL;
+    node->else_body = NULL;
+
+    return node;
+}
+
 void print_tree(NoAST *node, int level) {
     if (!node) return;
     for (int i = 0; i < level; i++) printf("  ");
@@ -198,6 +211,10 @@ void print_tree(NoAST *node, int level) {
             printf("INPUT()\n");
             break;
 
+        case NODE_FLOAT:
+            printf("FLOAT: %f\n", node->float_val);
+            break;
+
         default: printf("No que nao sabemos\n");
     }
     
@@ -244,6 +261,10 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
     switch (node->type) {
         case NODE_INT: 
             sprintf(result, "%d", node->int_val);
+            return strdup(result);
+
+        case NODE_FLOAT: 
+            sprintf(result, "%f", node->float_val);
             return strdup(result);
             
         case NODE_BOOL:

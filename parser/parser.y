@@ -140,7 +140,7 @@ term:
 factor:
     NUM { $$ = create_int_node($1); }
     | BOOL { $$ = create_bool_node($1); }
-    | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
+    | FLOAT_NUM { $$ = create_float_node($1); }
     | STRING { && = create_string_node($1); }
     | ID { 
         if(lookup_symbol($1) == NULL) {
