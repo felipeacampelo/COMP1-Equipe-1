@@ -28,6 +28,7 @@ void yyerror(const char *s);
 %token IMPORT FROM AS
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
+%token <id> STRING
 
 %token INDENT DEDENT NEWLINE
 
@@ -103,6 +104,7 @@ term:
 factor:
     NUM { $$ = create_int_node($1); }
     | FLOAT_NUM { $$ = create_int_node((int)$1); } // Aceita o decimal na árvore
+    | STRING { && = create_string_node($1); }
     | ID { 
         if(lookup_symbol($1) == NULL) {
             printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);

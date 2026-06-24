@@ -104,6 +104,19 @@ void push(int n) {
     return NUM;
 }
 
+\"([^\\\"]|\\.)*\" {
+    char *s = strdup(yytext);
+
+    s[strlen(s)-1] = '\0';
+
+    yylval.id = strdup(s + 1);
+
+    free(s);
+
+    return STRING;
+}
+
+
 "++" {
     return INCREMENT;
 }

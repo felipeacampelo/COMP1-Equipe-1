@@ -2,7 +2,8 @@
 #define AST_H
 
 typedef enum {
-    NODE_INT,       
+    NODE_INT,      
+    NODE_STRING, 
     NODE_ID,        
     NODE_OP,        
     NODE_PRINT,     
@@ -18,6 +19,7 @@ typedef enum {
 typedef struct no_ast {
     NodeType type;
     int int_val;
+    char *str_val;
     double float_val;            
     char *id_val;           
     char *op_val;
@@ -38,8 +40,7 @@ NoAST* create_while_node(NoAST *codition, NoAST *body);
 NoAST* create_block_node(NoAST *v1, NoAST *v2);
 NoAST* create_range_node(NoAST *start, NoAST *end);
 NoAST* create_for_node(NoAST *iter_var, NoAST *body, NoAST *iterable);
-
-
+NoAST* create_string_node(char *str);
 
 void print_tree(NoAST *node, int level);
 void optimize_ast(NoAST *node);

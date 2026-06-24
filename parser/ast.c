@@ -88,6 +88,18 @@ NoAST* create_if_else_node(NoAST *condition, NoAST *if_body, NoAST *else_body) {
     return node;
 }
 
+NoAST* create_string_node(char *str){
+    NoAST *node = malloc(sizeof(NoAST));
+
+    node->type = NODE_STRING;
+    node->str_val = strdup(str);
+
+    node->left = NULL;
+    node->right = NULL;
+
+    return node;
+}
+
 void print_tree(NoAST *node, int level) {
     if (!node) return;
     for (int i = 0; i < level; i++) printf("  ");
@@ -95,6 +107,10 @@ void print_tree(NoAST *node, int level) {
     switch (node->type) {
         case NODE_INT: 
             printf("NUM: %d\n", node->int_val); 
+            break;
+
+        case NODE_STRING:
+            printf("STRING: %s\n", node->str_val);
             break;
 
         case NODE_ID:  
@@ -205,6 +221,9 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
             sprintf(result, "%d", node->int_val);
             return strdup(result);
             
+        case NODE_STRING:
+            return node->str_val;
+        
         case NODE_ID:
             return node->id_val;
 
