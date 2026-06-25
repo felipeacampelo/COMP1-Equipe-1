@@ -4,6 +4,8 @@
 #include <string.h>
 #include "../parser/parser.tab.h" 
 
+int yyparse(void);
+
 int indents[100];
 int top = 0;
 int pending_dents = 0;
