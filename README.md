@@ -8,6 +8,11 @@ Este projeto implementa um compilador para um subconjunto de Python usando Flex 
 - geração de código intermediário (TAC)
 - geração de código final em Java (`Main.java`)
 
+## Você também pode ver a documentação do GitPages
+```bash
+https://felipeacampelo.github.io/COMP1-Equipe-1/
+```
+
 ## Como compilar
 
 Primeiro, garanta que o ambiente tenha:
