@@ -52,7 +52,7 @@ program:
         if($1){ 
             print_tree($1, 0); 
             printf("\n"); 
-            compile_intermediate($1);
+            compile_program($1);
         } 
     }
 ;

@@ -236,7 +236,7 @@ void optimize_ast(NoAST *node) {
     }
 }
 
-void compile_intermediate(NoAST *root) {
+void compile_program(NoAST *root) {
     optimize_ast(root);
     compile_java(root, "Main.java");
 }
