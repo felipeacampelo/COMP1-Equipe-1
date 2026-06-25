@@ -37,6 +37,10 @@ void push(int n) {
     return FOR;
 }
 
+"range" {
+    return RANGE;
+}
+
 "import" {
     return IMPORT;
 }
@@ -47,6 +51,16 @@ void push(int n) {
 
 "from" {
     return FROM;
+}
+
+"True" {
+    yylval.intValue = 1;
+    return BOOL;
+}
+
+"False" {
+    yylval.intValue = 0;
+    return BOOL;
 }
 
 "input" {
@@ -65,15 +79,11 @@ void push(int n) {
     return FLOAT;
 }
 
-"complex" {
-    return COMPLEX;
-}
-
 "%" {
     return MOD;
 }
 
-"!" {
+"not" {
     return NOT;
 }
 
@@ -104,9 +114,16 @@ void push(int n) {
     return NUM;
 }
 
-\"[^\"]*\" {
-    yylval.id = strdup(yytext);
-    return STRING_VAL;
+\"([^\\\"]|\\.)*\" { /* A string é tratada sem as aspas */
+    char *s = strdup(yytext);
+
+    s[strlen(s)-1] = '\0';
+
+    yylval.id = strdup(s + 1);
+
+    free(s);
+
+    return STRING;
 }
 
 "++" {
@@ -175,6 +192,10 @@ void push(int n) {
 
 ":" {
     return COLON;
+}
+
+"," {
+    return COMMA;
 }
 
 \r?\n[ \t]* { 
