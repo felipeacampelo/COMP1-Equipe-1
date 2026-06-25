@@ -51,6 +51,6 @@ NoAST* create_string_node(char *str);
 
 void print_tree(NoAST *node, int level);
 void optimize_ast(NoAST *node);
-void compile_intermediate(NoAST *root);
+void compile_program(NoAST *root);
 
 #endif
