@@ -74,6 +74,9 @@ static const char* infer_type(NoAST *node) {
         case NODE_ID:
             return declared_type(node->id_val);
 
+        case NODE_INPUT:
+            return "int";
+
         case NODE_OP:
             if (node->op_val && (is_comparison_op(node->op_val) || strcmp(node->op_val, "!") == 0)) {
                 return "boolean";
@@ -127,6 +130,10 @@ static void generate_java(NoAST *node, FILE *out, int lvl) {
 
         case NODE_ID:
             fprintf(out, "%s", node->id_val);
+            break;
+
+        case NODE_INPUT:
+            fprintf(out, "new java.util.Scanner(System.in).nextInt()");
             break;
 
         case NODE_OP:
