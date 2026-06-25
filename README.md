@@ -48,7 +48,7 @@ Para compilar um arquivo de entrada:
 Exemplo:
 
 ```bash
-./compiladorpj exemplos/01_fluxo_inteiros.py
+./compiladorpj tests/teste_basico.in
 ```
 
 Ao executar, o compilador:
@@ -62,7 +62,7 @@ Ao executar, o compilador:
 Depois de rodar o compilador com um arquivo válido:
 
 ```bash
-./compiladorpj exemplos/01_fluxo_inteiros.py
+./compiladorpj tests/teste_basico.in
 ```
 
 o arquivo abaixo será gerado na raiz do projeto:
@@ -82,15 +82,15 @@ java Main
 
 ## Exemplos prontos
 
-Os exemplos finais de apresentação estão em:
+Os exemplos de teste disponíveis nesta branch estão em:
 
 ```bash
-exemplos/
+tests/
 ```
 
 Arquivos disponíveis:
 
-- `01_fluxo_inteiros.py`
-- `02_fluxo_float.py`
-- `03_erro_semantico.py`
-- `04_erro_sintatico.py`
+- `teste_basico.in`
+- `teste_if_else.in`
+- `teste_while.in`
+- `teste_erro.in`
