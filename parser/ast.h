@@ -37,6 +37,8 @@ typedef struct no_ast {
 NoAST* create_int_node(int val);
 NoAST* create_bool_node(int value);
 NoAST* create_id_node(char *id);
+NoAST* create_float_node(double valor);
+NoAST* create_string_node(char *val);
 NoAST* create_op_node(NodeType type, char *op, NoAST *left, NoAST *right);
 NoAST* create_print_node(NoAST *expr);
 NoAST* create_if_node(NoAST *codition, NoAST *body);

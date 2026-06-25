@@ -37,6 +37,10 @@ void push(int n) {
     return FOR;
 }
 
+"range" {
+    return RANGE;
+}
+
 "import" {
     return IMPORT;
 }
@@ -73,10 +77,6 @@ void push(int n) {
 
 "float" {
     return FLOAT;
-}
-
-"complex" {
-    return COMPLEX;
 }
 
 "%" {
@@ -192,6 +192,10 @@ void push(int n) {
 
 ":" {
     return COLON;
+}
+
+"," {
+    return COMMA;
 }
 
 \r?\n[ \t]* { 

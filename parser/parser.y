@@ -30,6 +30,8 @@ void yyerror(const char *s);
 %token INPUT 
 %token INT DOUBLE FLOAT COMPLEX
 %token <id> STRING
+%token COMMA
+%token RANGE
 
 %token INDENT DEDENT NEWLINE
 
@@ -143,10 +145,11 @@ factor:
     | FLOAT_NUM { $$ = create_float_node($1); }
     | STRING { $$ = create_string_node($1); }
     | ID { 
-        if(lookup_symbol($1) == NULL) {
-            printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
+            if(lookup_symbol($1) == NULL) {
+                printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
+            }
+            $$ = create_id_node($1); 
         }
-        $$ = create_id_node($1); }
     | NOT factor { $$ = create_op_node(NODE_OP, "!", $2, NULL); }
     | LPAREN expr RPAREN { $$ = $2; }
     | INPUT LPAREN RPAREN { $$ = create_op_node(NODE_INPUT, "input", NULL, NULL); }
