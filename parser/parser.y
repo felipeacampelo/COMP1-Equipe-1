@@ -141,7 +141,7 @@ factor:
     NUM { $$ = create_int_node($1); }
     | BOOL { $$ = create_bool_node($1); }
     | FLOAT_NUM { $$ = create_float_node($1); }
-    | STRING { && = create_string_node($1); }
+    | STRING { $$ = create_string_node($1); }
     | ID { 
         if(lookup_symbol($1) == NULL) {
             printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);

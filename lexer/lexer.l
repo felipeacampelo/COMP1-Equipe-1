@@ -55,7 +55,7 @@ void push(int n) {
 }
 
 "False" {
-    yylval.intValeu = 0;
+    yylval.intValue = 0;
     return BOOL;
 }
 
