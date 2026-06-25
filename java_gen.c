@@ -11,6 +11,8 @@ typedef struct {
 static JavaVar declared[100];
 static int n_decl = 0;
 
+static void generate_java(NoAST *node, FILE *out, int lvl);
+
 static int find_declared(char *name) {
     for (int i = 0; i < n_decl; i++) {
         if (strcmp(declared[i].name, name) == 0) {
@@ -89,6 +91,20 @@ static const char* infer_type(NoAST *node) {
     }
 }
 
+static int is_boolean_expr(NoAST *node) {
+    return strcmp(infer_type(node), "boolean") == 0;
+}
+
+static void generate_java_condition(NoAST *node, FILE *out) {
+    if (is_boolean_expr(node)) {
+        generate_java(node, out, 0);
+        return;
+    }
+
+    generate_java(node, out, 0);
+    fprintf(out, " != 0");
+}
+
 static void generate_java(NoAST *node, FILE *out, int lvl) {
     if (!node) return;
 
@@ -148,7 +164,7 @@ static void generate_java(NoAST *node, FILE *out, int lvl) {
         case NODE_IF:
             indent(out, lvl);
             fprintf(out, "if (");
-            generate_java(node->left, out, 0);
+            generate_java_condition(node->left, out);
             fprintf(out, ") {\n");
             generate_java(node->right, out, lvl + 1);
             indent(out, lvl);
@@ -158,7 +174,7 @@ static void generate_java(NoAST *node, FILE *out, int lvl) {
         case NODE_IF_ELSE:
             indent(out, lvl);
             fprintf(out, "if (");
-            generate_java(node->left, out, 0);
+            generate_java_condition(node->left, out);
             fprintf(out, ") {\n");
             generate_java(node->right, out, lvl + 1);
             indent(out, lvl);
@@ -171,7 +187,7 @@ static void generate_java(NoAST *node, FILE *out, int lvl) {
         case NODE_WHILE:
             indent(out, lvl);
             fprintf(out, "while (");
-            generate_java(node->left, out, 0);
+            generate_java_condition(node->left, out);
             fprintf(out, ") {\n");
             generate_java(node->right, out, lvl + 1);
             indent(out, lvl);
