@@ -75,7 +75,7 @@ static const char* infer_type(NoAST *node) {
             return declared_type(node->id_val);
 
         case NODE_OP:
-            if (node->op_val && is_comparison_op(node->op_val)) {
+            if (node->op_val && (is_comparison_op(node->op_val) || strcmp(node->op_val, "!") == 0)) {
                 return "boolean";
             }
 
@@ -130,9 +130,26 @@ static void generate_java(NoAST *node, FILE *out, int lvl) {
             break;
 
         case NODE_OP:
-            generate_java(node->left, out, 0);
-            fprintf(out, " %s ", node->op_val);
-            generate_java(node->right, out, 0);
+            if (node->op_val && strcmp(node->op_val, "!") == 0) {
+                fprintf(out, "!");
+                generate_java(node->left, out, 0);
+            } else if (node->op_val && strcmp(node->op_val, "//") == 0) {
+                if (strcmp(infer_type(node), "double") == 0) {
+                    fprintf(out, "Math.floor(");
+                    generate_java(node->left, out, 0);
+                    fprintf(out, " / ");
+                    generate_java(node->right, out, 0);
+                    fprintf(out, ")");
+                } else {
+                    generate_java(node->left, out, 0);
+                    fprintf(out, " / ");
+                    generate_java(node->right, out, 0);
+                }
+            } else {
+                generate_java(node->left, out, 0);
+                fprintf(out, " %s ", node->op_val);
+                generate_java(node->right, out, 0);
+            }
             break;
 
         case NODE_ASSIGN:
