@@ -35,6 +35,9 @@ void yyerror(const char *s);
 
 %token INDENT DEDENT NEWLINE
 
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+
 %left MT LT EQ
 %left PLUS MINUS
 %left TIMES DIV
@@ -52,7 +55,7 @@ program:
         if($1){ 
             print_tree($1, 0); 
             printf("\n"); 
-            compile_intermediate($1);
+            compile_program($1);
         } 
     }
 ;
@@ -106,14 +109,14 @@ stmt:
         $$ = create_op_node(NODE_ASSIGN, "=", id, op);
     }
     | PRINT LPAREN expr RPAREN { $$ = create_print_node($3); }
-    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_if_node($3, $7); }
+    | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT %prec LOWER_THAN_ELSE { $$ = create_if_node($3, $7); }
     | IF LPAREN expr RPAREN COLON stmt ELSE COLON stmt { $$ = create_if_else_node($3, $6, $9); }
     | IF LPAREN expr RPAREN COLON INDENT stmt_list DEDENT ELSE COLON INDENT stmt_list DEDENT { $$ = create_if_else_node($3, $7, $12); }
     | WHILE LPAREN expr RPAREN COLON INDENT stmt_list DEDENT { $$ = create_while_node($3, $7); }
     | expr { $$ = $1; }
     | FOR ID { insert_symbol($2); } IN expr COLON INDENT stmt_list DEDENT { $$ = create_for_node(create_id_node($2), $8, $5); }
     | WHILE LPAREN expr RPAREN COLON stmt { $$ = create_while_node($3, $6); }
-    | IF LPAREN expr RPAREN COLON stmt { $$ = create_if_node($3, $6); }
+    | IF LPAREN expr RPAREN COLON stmt %prec LOWER_THAN_ELSE { $$ = create_if_node($3, $6); }
     | IMPORT ID { $$ = NULL; }
     | FROM ID IMPORT ID { $$ = NULL; }
     | FROM ID IMPORT ID AS ID { $$ = NULL; }
@@ -146,7 +149,7 @@ factor:
     | STRING { $$ = create_string_node($1); }
     | ID { 
             if(lookup_symbol($1) == NULL) {
-                printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
+                printf("Erro semantico: A variavel '%s' nao foi declarada!\n", $1);
             }
             $$ = create_id_node($1); 
         }

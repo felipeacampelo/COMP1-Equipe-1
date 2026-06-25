@@ -3,7 +3,7 @@ TARGET = compiladorpj
 all:
 	bison -d parser/parser.y -o parser/parser.tab.c
 	flex -o lexer/lex.yy.c lexer/lexer.l
-	gcc parser/parser.tab.c lexer/lex.yy.c parser/ast.c parser/symtable.c -o $(TARGET) -lfl
+	gcc parser/parser.tab.c lexer/lex.yy.c parser/ast.c parser/symtable.c java_gen.c -o $(TARGET) -lfl
 
 # testes automatizados
 test: all
