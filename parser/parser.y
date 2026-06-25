@@ -150,6 +150,7 @@ factor:
     | NOT factor { $$ = create_op_node(NODE_OP, "!", $2, NULL); }
     | LPAREN expr RPAREN { $$ = $2; }
     | INPUT LPAREN RPAREN { $$ = create_op_node(NODE_INPUT, "input", NULL, NULL); }
+    | RANGE LPAREN expr COMMA expr RPAREN { $$ = create_range_node($3, $5); }
 ;
 
 %%

@@ -377,7 +377,6 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
             fprintf(saida_tac, "\tprint %s\n", val);
             return "";
         }
-        default: return "";
 
         case NODE_INPUT: {
             int temp = new_temp();
@@ -389,6 +388,47 @@ char* generate_tac(NoAST *node, FILE *saida_tac) { // Com alterações para o FI
             sprintf(result, "t%d", temp);
             return strdup(result);
         }
+
+        case NODE_FOR: {
+            char* var = node->left->left->id_val;  // iter var
+            NoAST* range = node->left->right;      // range node
+
+            char* start = generate_tac(range->left, saida_tac);
+            char* end = generate_tac(range->right, saida_tac);
+
+            int l_start = new_label();
+            int l_end = new_label();
+
+            // i = start
+            fprintf(saida_tac, "\t%s = %s\n", var, start);
+
+            fprintf(saida_tac, "L%d:\n", l_start);
+
+            // if i >= end goto Lend
+            fprintf(saida_tac,
+                "\tIf(False) %s >= %s JMP L%d\n",
+                var,
+                end,
+                l_end
+            );
+
+            // body
+            generate_tac(node->right, saida_tac);
+
+            // i = i + 1
+            fprintf(saida_tac,
+                "\t%s = %s + 1\n",
+                var,
+                var
+            );
+
+            fprintf(saida_tac, "\tJMP L%d\n", l_start);
+            fprintf(saida_tac, "L%d:\n", l_end);
+
+            return "";
+        }
+
+        default: return "";
     }
 }
 
