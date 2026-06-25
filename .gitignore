@@ -16,6 +16,10 @@ parser.tab.c
 parser.tab.h
 *.output
 
+# Arquivos gerados do backend Java
+Main.java
+Main.class
+
 # Arquivos temporários do editor
 *~
 .*.swp

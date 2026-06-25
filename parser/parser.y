@@ -146,7 +146,7 @@ factor:
     | STRING { $$ = create_string_node($1); }
     | ID { 
             if(lookup_symbol($1) == NULL) {
-                printf("Erro sintático: A variável '%s' não foi declarada!\n", $1);
+                printf("Erro semantico: A variavel '%s' nao foi declarada!\n", $1);
             }
             $$ = create_id_node($1); 
         }
