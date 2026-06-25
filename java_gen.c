@@ -3,21 +3,41 @@
 #include <string.h>
 #include "java_gen.h"
 
-static char declared[100][50];
+typedef struct {
+    char name[50];
+    const char *type;
+} JavaVar;
+
+static JavaVar declared[100];
 static int n_decl = 0;
 
-static int was_declared(char *name) {
+static int find_declared(char *name) {
     for (int i = 0; i < n_decl; i++) {
-        if (strcmp(declared[i], name) == 0) {
-            return 1;
+        if (strcmp(declared[i].name, name) == 0) {
+            return i;
         }
     }
 
-    return 0;
+    return -1;
 }
 
-static void mark_declared(char *name) {
-    strcpy(declared[n_decl++], name);
+static int was_declared(char *name) {
+    return find_declared(name) >= 0;
+}
+
+static const char* declared_type(char *name) {
+    int idx = find_declared(name);
+    if (idx >= 0) {
+        return declared[idx].type;
+    }
+
+    return "int";
+}
+
+static void mark_declared(char *name, const char *type) {
+    strcpy(declared[n_decl].name, name);
+    declared[n_decl].type = type;
+    n_decl++;
 }
 
 static void indent(FILE *out, int l) {
@@ -26,13 +46,47 @@ static void indent(FILE *out, int l) {
     }
 }
 
+static int is_comparison_op(const char *op) {
+    return strcmp(op, ">") == 0 ||
+           strcmp(op, "<") == 0 ||
+           strcmp(op, "==") == 0 ||
+           strcmp(op, "!=") == 0;
+}
+
 static const char* infer_type(NoAST *node) {
     if (!node) return "int";
 
-    if (node->type == NODE_STRING) return "String";
-    if (node->type == NODE_FLOAT) return "double";
+    switch (node->type) {
+        case NODE_INT:
+            return "int";
 
-    return "int";
+        case NODE_STRING:
+            return "String";
+
+        case NODE_FLOAT:
+            return "double";
+
+        case NODE_BOOL:
+            return "boolean";
+
+        case NODE_ID:
+            return declared_type(node->id_val);
+
+        case NODE_OP:
+            if (node->op_val && is_comparison_op(node->op_val)) {
+                return "boolean";
+            }
+
+            if ((node->left && strcmp(infer_type(node->left), "double") == 0) ||
+                (node->right && strcmp(infer_type(node->right), "double") == 0)) {
+                return "double";
+            }
+
+            return "int";
+
+        default:
+            return "int";
+    }
 }
 
 static void generate_java(NoAST *node, FILE *out, int lvl) {
@@ -69,8 +123,9 @@ static void generate_java(NoAST *node, FILE *out, int lvl) {
             indent(out, lvl);
 
             if (!was_declared(node->left->id_val)) {
-                fprintf(out, "%s ", infer_type(node->right));
-                mark_declared(node->left->id_val);
+                const char *type = infer_type(node->right);
+                fprintf(out, "%s ", type);
+                mark_declared(node->left->id_val, type);
             }
 
             fprintf(out, "%s = ", node->left->id_val);
